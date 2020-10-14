@@ -28,13 +28,13 @@ https://templatemo.com/tm-516-known
 
   h1 {
     color: #252525;
-    font-size: 3em;
+    font-size: 50px;
     line-height: normal;
   }
 
   h2 {
     color: #353535;
-    font-size: 2em;
+    font-size: 30px;
     padding-bottom: 10px;
   }
 
@@ -49,8 +49,8 @@ https://templatemo.com/tm-516-known
   }
 
   p {
-    color: #757575;
-    font-size: 14px;
+    color: #000000;
+    font-size: 15px;
     font-weight: normal;
     line-height: 24px;
   }
