@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Muli:300,700|Nunito');
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display|Lato');
 
 body {
   background: #ffffff;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Lato';
   overflow-x: hidden;
   padding-top: 70px;
 }
@@ -13,7 +13,7 @@ body {
 -----------------------------------------*/
 
 h1,h2,h3,h4,h5,h6 {
-  font-family: 'Playfair Display', 'Lato', 'sans-serif';
+  font-family: 'Playfair Display';
   font-weight: bold;
   line-height: inherit;
 }
@@ -31,7 +31,7 @@ h2 {
 }
 
 h3 {
-  font-size: 15px;
+  font-size: 20px;
   margin-bottom: 0;
 }
 
@@ -388,8 +388,12 @@ background-position: center;
 
 
 /*---------------------------------------
-    MEMBERS              
+    ABOUT US              
 -----------------------------------------*/
+
+#about {
+  background: #FED79D;
+}
 
 .team-thumb {
   background: #e4ebea;
@@ -418,34 +422,6 @@ background-position: center;
 
 .team-info h3 {
   margin: 0;
-}
-
-
-/*---------------------------------------
-   NEWS              
------------------------------------------*/
-
-.news-thumb {
-  clear: both;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 30px;
-}
-
-.news-thumb .news-image {
-  float: left;
-  width: 40%;
-  margin-right: 30px;
-}
-
-.news-info h3 {
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-
-.news-date span {
-  color: #909090;
-  font-weight: bold;
 }
 
 
