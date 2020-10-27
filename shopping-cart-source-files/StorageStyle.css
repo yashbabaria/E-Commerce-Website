@@ -11,7 +11,7 @@ label {
 #main {
 	border: 1px dotted blue;
 	padding: 6px;
-	background-color: #ccc;
+	background-color: rgb(241, 170, 107);
 	margin-right: 50%;
 }
 
