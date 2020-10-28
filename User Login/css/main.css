@@ -134,14 +134,14 @@ iframe {
 .txt1 {
   font-family: Ubuntu-Regular;
   font-size: 15px;
-  color: #999999;
+  color: rgb(1,43, 54);
   line-height: 1.4;
 }
 
 .txt2 {
   font-family: Ubuntu-Regular;
   font-size: 15px;
-  color: #57b846;
+  color: rgb(1, 43, 54);
   line-height: 1.4;
 }
 
@@ -175,12 +175,12 @@ iframe {
   align-items: center;
   padding: 15px;
   position: relative;
-  background-color: #fff;
+  background-color: rgb(103, 132, 146);
 }
 
 .wrap-login100 {
   width: 500px;
-  background: #fff;
+  background: rgb(228, 235, 234);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
@@ -211,7 +211,7 @@ iframe {
   width: 100%;
   top: 0;
   left: 0;
-  background-color: #57b846;
+  background-color: rgb(241, 170, 107);
   padding-top: 50px;
   padding-bottom: 39px;
 }
