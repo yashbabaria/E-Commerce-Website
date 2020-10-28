@@ -1,9 +1,9 @@
 
 
 td,th {
-	font-family: monospace;
+	font-family: sans-serif;
 	padding: 4px;
-	background-color: #ccc;
+	background-color: rgb(228, 235, 234);
 }
 
 label {
@@ -28,6 +28,7 @@ label {
 	font-size: 18px;
 	margin-top: 0px;
 	font-family: sans-serif;
+	color: white;
 }
 
 
