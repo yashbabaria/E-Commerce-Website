@@ -6,9 +6,9 @@
 
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-     <meta name="description" content="">
+     <meta name="description" content="Home page">
      <meta name="keywords" content="">
-     <meta name="author" content="">
+     <meta name="author" content="Team5">
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -20,6 +20,7 @@
      <link rel="stylesheet" href="css/style.css">
 
 </head>
+
 <body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
 
      <!-- PRE LOADER -->
@@ -37,14 +38,8 @@
           <div class="container">
 
                <div class="navbar-header">
-                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                    </button>
-
                     <!-- lOGO TEXT HERE -->
-                    <a href="#" class="navbar-brand">COVIDLY-Safe</a>
+                    <a href="#" class="navbar-brand">Covidly-Safe</a>
                </div>
 
                <!-- MENU LINKS -->
@@ -69,44 +64,44 @@
      <section id="home">
           <div class="row">
 
-                    <div class="owl-carousel owl-theme home-slider">
-                         <div class="item item-first">
-                              <div class="caption">
-                                   <div class="container">
-                                        <div class="col-md-6 col-sm-12">
-                                             <h1>Covidly-Safe</h1>
-                                             <h3>"It's Cool Being Safe"</h3>
-                                             <a href="about.html" class="section-btn btn btn-default">Get to Know Us</a>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-
-                         <div class="item item-second">
-                              <div class="caption">
-                                   <div class="container">
-                                        <div class="col-md-6 col-sm-12">
-                                             <h1>19 COVID19 Essentials</h1>
-                                             <h3>Masks, hand-sanitizer, paper-towel, everything is available for your
-                                                  stay at home supplies.</h3>
-                                             <a href="store.html" class="section-btn btn btn-default">Shop for Mask</a>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-
-                         <div class="item item-third">
-                              <div class="caption">
-                                   <div class="container">
-                                        <div class="col-md-6 col-sm-12">
-                                             <h1>Stock Suppliers Needed</h1>
-                                             <h3>Are you interested in working together with us? Click the button below!</h3>
-                                             <a href="contact.html" class="section-btn btn btn-default">Contact Us</a>
-                                        </div>
+               <div class="owl-carousel owl-theme home-slider">
+                    <div class="item item-first">
+                         <div class="caption">
+                              <div class="container">
+                                   <div class="col-md-6 col-sm-12">
+                                        <h1>Covidly-Safe</h1>
+                                        <h3>"It's Cool Being Safe"</h3>
+                                        <a href="about.html" class="section-btn btn btn-default">Get to Know Us</a>
                                    </div>
                               </div>
                          </div>
                     </div>
+
+                    <div class="item item-second">
+                         <div class="caption">
+                              <div class="container">
+                                   <div class="col-md-6 col-sm-12">
+                                        <h1>19 COVID19 Essentials</h1>
+                                        <h3>Masks, hand-sanitizer, paper-towel, everything is available for your
+                                             stay at home supplies.</h3>
+                                        <a href="store.html" class="section-btn btn btn-default">Shop for Mask</a>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+
+                    <div class="item item-third">
+                         <div class="caption">
+                              <div class="container">
+                                   <div class="col-md-6 col-sm-12">
+                                        <h1>Stock Suppliers Needed</h1>
+                                        <h3>Are you interested in working together with us? Click the button below!</h3>
+                                        <a href="contact.html" class="section-btn btn btn-default">Contact Us</a>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
           </div>
      </section>
 
@@ -160,23 +155,23 @@
                          </div>
                     </div>
 
+                    
                     <div class="col-md-4 col-sm-12">
                          <div class="footer-info newsletter-form">
-                              <div class="section-title">
-                                   <h2>Covidly-Safe Promotion Signup</h2>
-                              </div>
-                              <div>
-                                   <div class="form-group">
-                                        <form action="#" method="get">
+                                 <div class="section-title">
+                                     <h2>Covidly-Safe Promotion Signup</h2>
+                                 </div>
+                                 <div>
+                                     <div class="form-group">
+                                         <form action="#" method="get">
                                              <input type="email" class="form-control" placeholder="Enter your email" name="email" id="email" required="">
                                              <input type="submit" class="form-control" name="submit" id="form-submit" value="Send me">
-                                        </form>
-                                        <span><sup>*</sup> By clicking "Send me" you allow us to have your information.</span>
-                                   </div>
-                              </div>
+                                         </form>
+                                         <span><sup>*</sup> By clicking "Send me" you allow us to have your information.</span>
+                                     </div>
+                                 </div>
                          </div>
-                    </div>
-                    
+                     </div>
                </div>
           </div>
      </footer>
@@ -188,6 +183,12 @@
      <script type="text/javascript" src="js/owl.carousel.min.js"></script>
      <script type="text/javascript" src="js/smoothscroll.js"></script>
      <script type="text/javascript" src="js/custom.js"></script>
+
+     <!-- React Components -->
+     <script type="text/javascript" src="js/productDisplay.js"></script>
+
+     <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 
 </body>
 </html>

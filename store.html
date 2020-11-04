@@ -6,9 +6,9 @@
 
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-     <meta name="description" content="">
+     <meta name="description" content="Store page">
      <meta name="keywords" content="">
-     <meta name="author" content="">
+     <meta name="author" content="Team5">
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
      <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -37,14 +37,8 @@
           <div class="container">
 
                <div class="navbar-header">
-                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                    </button>
-
                     <!-- lOGO TEXT HERE -->
-                    <a href="#" class="navbar-brand">COVIDLY-Safe</a>
+                    <a href="index.html" class="navbar-brand">Covidly-Safe</a>
                </div>
 
                <!-- MENU LINKS -->
@@ -62,6 +56,35 @@
                </div>
 
           </div>
+     </section>
+
+
+     <!-- STORE -->
+     <section id="store">
+
+        <div class="container">
+            <h1>Store</h1>
+            <input type="text" class="col-xs-11" id="search-bar" placeholder="Search product by keywords...">
+            <button class="btn btn-secondary col-xs-1" onclick="search()"><i class="fa fa-search"></i></button>
+        </div>
+
+        <div class="container">
+            <div class="submenu">
+                <button class="submenu-button col-xs-2" onclick="displayProducts('All')">All</button>
+                <button class="submenu-button col-xs-2" onclick="displayProducts('Mask')">Mask</button>
+                <button class="submenu-button col-xs-2" onclick="displayProducts('PPE')">PPE</button>
+                <button class="submenu-button col-xs-2" onclick="displayProducts('Essentials')">Essentials</button>
+                <button class="submenu-button col-xs-2" onclick="displayProducts('Pharm')">Pharmaceutical</button>
+                <button class="submenu-button col-xs-2" onclick="displayProducts('Other')">Other</button>
+            </div>
+
+            <div class="row store-content">
+                <div id="filter-menu"></div>
+                <ul id="product-list"></ul>
+            </div>
+
+        </div>
+
      </section>
 
 
@@ -143,6 +166,13 @@
      <script src="js/owl.carousel.min.js"></script>
      <script src="js/smoothscroll.js"></script>
      <script src="js/custom.js"></script>
+     <script src="js/product.js"></script>
+
+    <!-- React Components -->
+    <script type="text/javascript" src="js/productDisplay.js"></script>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 
 </body>
 </html>

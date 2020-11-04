@@ -426,6 +426,63 @@ background-position: center;
 
 
 /*---------------------------------------
+    STORE              
+-----------------------------------------*/
+
+#store {
+  background: #e4ebea;
+}
+
+#search-bar {
+  padding: 7px;
+  border: none;
+}
+
+.submenu {
+  position: relative;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.submenu-button {
+  padding: 10px;
+  color: #e4ebea;
+  border-width: 1px;
+  border-color: #e4ebea;
+  background: #678492;
+}
+
+.product-thumb {
+  background: #e4ebea;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+
+.product-info {
+  padding: 20px 30px;
+}
+
+.product-image img {
+  width: 100%;
+}
+
+.product-thumb .star-icon {
+  border-top: 1px solid #e4ebea;
+  padding: 4px 20px 0 20px;
+}
+
+.product-thumb .product-icon li a {
+  background: #e4ebea;
+  color: #012B36;
+}
+
+.product-info h3 {
+  margin: 0;
+}
+
+
+/*---------------------------------------
     CONTACT             
 -----------------------------------------*/
 

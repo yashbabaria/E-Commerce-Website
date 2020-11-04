@@ -3,6 +3,7 @@
  */
 
  const sqlite3 = require('sqlite3').verbose();
+ let products = [];
  let db = null;
 
  /* A function to open database */
@@ -39,7 +40,7 @@ function addProductToStore(name, type="", description="", cost=0) {
 }
 
 /* A function to update a product in the product database */
-function updateProductToStore(id, name, newName=null, newType=null, newDescription=null, newCost=null) {
+function updateProductInStore(id, name, newName=null, newType=null, newDescription=null, newCost=null) {
     openDatabase();
     if (newName != null) updateProductName(id, name, newName);
     if (newType != null) updateProductType(id, name, newType);
@@ -118,22 +119,54 @@ function deleteProductFromStore(id, name) {
     closeDatabase();
 }
 
-/* TODO -- Display Products on the Store Page */
-function displayProducts() {
+/* A function to load all products */
+function loadProducts(category) {
+    openDatabase();
     db.serialize(() => {
-        let sql = "SELECT * FROM Product";
+        let sql = `SELECT Name_Of_Product name,
+                          Cost cost
+                          FROM Product`;
+        switch (category) {
+            case 'Mask':
+                sql += " WHERE Type_Of_Product='Mask'";
+                break;
+
+            case 'PPE':
+                sql += " WHERE Type_Of_Product='PPE'";
+                break;
+
+            case 'Essentials':
+                sql += " WHERE Type_Of_Product='Essentials'";
+                break;
+
+            case 'Pharm':
+                sql += " WHERE Type_Of_Product='Pharm'";
+                break;
+
+            case 'Other':
+                sql += " WHERE Type_Of_Product='Other'";
+        }
+
+        sql += " ORDER BY Name_Of_Product";
+        
         db.all(sql, (err, rows) => {
             if (err) throw err;
 
             if(rows){
-                rows.forEach(product => {
-                    
+                rows.forEach(product => {                    
+                    products.push({name:product.name, cost:product.cost});
                 });
             } else {
                 console.log("There is no product in the store.");
             }
         });
       });
+    
+    closeDatabase();
+    return products;
 }
 
-addProductToStore("Something");
+addProductToStore('Some');
+loadProducts('All');
+deleteProductFromStore(1, 'Some');
+
