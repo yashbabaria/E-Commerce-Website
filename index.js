@@ -5,6 +5,7 @@ const port = 8080;
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
+    console.log(__dirname);
     res.sendFile(__dirname + '/index.html');
 });
 
