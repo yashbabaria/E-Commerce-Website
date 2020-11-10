@@ -21,15 +21,6 @@ CREATE TABLE IF NOT EXISTS "OrderDetails" (
 	FOREIGN KEY("Product_ID") REFERENCES "Product"("Product_Id"),
 	PRIMARY KEY("Order_ID" AUTOINCREMENT)
 );
-CREATE TABLE IF NOT EXISTS "customers" (
-	"customer_id"	INTEGER NOT NULL UNIQUE,
-	"name"	TEXT,
-	"Date of Birth"	TEXT,
-	"Email"	TEXT,
-	"Username"	TEXT,
-	"Password"	TEXT,
-	PRIMARY KEY("customer_id" AUTOINCREMENT)
-);
 CREATE TABLE IF NOT EXISTS "Product" (
 	"Product_Id"	INTEGER,
 	"Name_Of_Product"	TEXT NOT NULL UNIQUE,
@@ -50,14 +41,23 @@ CREATE TABLE IF NOT EXISTS "customer_private" (
 	"State"	TEXT NOT NULL,
 	"Country"	TEXT NOT NULL,
 	"Postal Code"	NUMERIC NOT NULL,
-	PRIMARY KEY("customer_id"),
-	FOREIGN KEY("customer_id") REFERENCES "customers"("customer_id")
+	FOREIGN KEY("customer_id") REFERENCES "customers"("customer_id"),
+	PRIMARY KEY("customer_id")
 );
 CREATE TABLE IF NOT EXISTS "Review" (
 	"Customer_Id"	NUMERIC NOT NULL,
 	"Description"	TEXT,
 	"Rating"	INTEGER,
-	PRIMARY KEY("Customer_Id"),
-	FOREIGN KEY("Customer_Id") REFERENCES "customers"("customer_id")
+	FOREIGN KEY("Customer_Id") REFERENCES "customers"("customer_id"),
+	PRIMARY KEY("Customer_Id")
+);
+CREATE TABLE IF NOT EXISTS "customers" (
+	"customer_id"	INTEGER NOT NULL UNIQUE,
+	"name"	TEXT,
+	"Date_of_Birth"	TEXT,
+	"Email"	TEXT,
+	"Username"	TEXT,
+	"Password"	TEXT,
+	PRIMARY KEY("customer_id" AUTOINCREMENT)
 );
 COMMIT;
