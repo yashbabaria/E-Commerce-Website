@@ -45,9 +45,10 @@ app.post('/register', async (req,res) => {
   if(username && password){
     const db = await dbPromise;
     await db.run("INSERT INTO customers(username,password) VALUES (?,?)", username, hashPassword)
+    res.redirect("/")
     //res.send(`Hello ${username}, With Password ${password}`)
   }else{
-    res.sendFile('/User\ SignUp/index.html')
+    //res.sendFile('/User\ SignUp/index.html')
   }
 })
 app.get('/register', (req, res) => {
@@ -56,6 +57,18 @@ app.get('/register', (req, res) => {
 
 //Sign In
 app.post('/login', async (req,res) => {
+  const db = await dbPromise
+  const username = req.body.username
+  const password = req.body.pass
+  const user = await db.get("SELECT * FROM customers WHERE username=?", username)
+  if(!user){
+     // error username not found in database
+  }
+  const passwordMatches = await bcrypt.compare(password, user.password)
+  if(!passwordMatches){
+    // error password not found in database
+  }
+
 
 })
 app.get('/login', async (req,res) => {
