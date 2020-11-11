@@ -52,7 +52,7 @@ app.post('/register', async (req,res) => {
   }
 })
 app.get('/register', (req, res) => {
-  res.sendFile('/User\ SignUp/index.html')
+  res.sendFile(__dirname + '/User\ SignUp/index.html')
 })
 
 //Sign In
@@ -65,14 +65,16 @@ app.post('/login', async (req,res) => {
      // error username not found in database
   }
   const passwordMatches = await bcrypt.compare(password, user.password)
+  console.log(user.password);
   if(!passwordMatches){
     // error password not found in database
   }
+  res.redirect("/")
 
 
 })
 app.get('/login', async (req,res) => {
-    res.sendFile('/User\ Login/index.html')
+    res.sendFile(__dirname + '/User\ Login/index.html')
 })
 
 app.listen(port, (error) => {
