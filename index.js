@@ -47,8 +47,6 @@ app.post('/register', async (req,res) => {
     await db.run("INSERT INTO customers(username,password) VALUES (?,?)", username, hashPassword)
     res.redirect("/")
     //res.send(`Hello ${username}, With Password ${password}`)
-  }else{
-    res.sendFile('/User\ SignUp/index.html')
   }
 })
 app.get('/register', (req, res) => {
