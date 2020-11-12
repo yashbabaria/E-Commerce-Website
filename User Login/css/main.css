@@ -134,7 +134,7 @@ iframe {
 .txt1 {
   font-family: Ubuntu-Regular;
   font-size: 15px;
-  color: rgb(1,43, 54);
+  color: rgb(1, 43, 54);
   line-height: 1.4;
 }
 
@@ -148,7 +148,7 @@ iframe {
 .txt3 {
   font-family: Ubuntu-Bold;
   font-size: 15px;
-  color: #57b846;
+  color: rgb(241, 170, 107);
   line-height: 1.4;
   text-transform: uppercase;
 }
