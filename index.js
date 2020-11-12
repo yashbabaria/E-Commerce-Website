@@ -26,24 +26,30 @@ app.get('/', (req, res) => {
 app.use(express.urlencoded());
 //Sign Up
 app.post('/register', async (req,res) => {
-  /*
-  Insert to customers Table:
-      const name = req.body.name
-      const dob = req.body.dob
-      const email = req.body.email
-  Insert to customer_private Table:
-      const address = req.body.address
-      const city = req.body.city
-      const state = req.body.state
-      const country = req.body.country
-      const postalCode = req.body.postalCode
-  */
+  const db = await dbPromise;
+  const name = req.body.name
+  const dob = req.body.dob
+  const email = req.body.email
+  if(name & dob & email){
+      await db.run("INSERT INTO customers(name, Date_of_Birth, Email) VALUES (?,?,?)",
+                  name, dob, email)
+  }
+
+  const address = req.body.address
+  const city = req.body.city
+  const state = req.body.state
+  const country = req.body.country
+  const postalCode = req.body.postalCode
+  if(address & city & state & country & postalCode){
+    await db.run("INSERT INTO customer_private(Home Adress, City, State, Country, Postal Code)",
+                address, city, state, country, postalCode)
+  }
+
   const username = req.body.username
   const password = req.body.pass
   //hashing the password
   const hashPassword = await bcrypt.hash(password, saltRounds)
   if(username && password){
-    const db = await dbPromise;
     await db.run("INSERT INTO customers(username,password) VALUES (?,?)", username, hashPassword)
     res.redirect("/")
     //res.send(`Hello ${username}, With Password ${password}`)
@@ -61,11 +67,14 @@ app.post('/login', async (req,res) => {
   const user = await db.get("SELECT * FROM customers WHERE username=?", username)
   if(!user){
      // error username not found in database
+     res.send("Username not Found")
   }
-  const passwordMatches = await bcrypt.compare(password, user.password)
+  const userPassword = await db.get("SELECT password FROM customers WHERE username=?", username)
+  const passwordMatches = await bcrypt.compare(password, userPassword)
   console.log(user.password);
   if(!passwordMatches){
     // error password not found in database
+    res.send("The password is incorrect")
   }
   res.redirect("/")
 
