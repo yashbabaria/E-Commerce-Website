@@ -27,14 +27,9 @@ app.use(express.urlencoded());
 //Sign Up
 app.post('/register', async (req,res) => {
   const db = await dbPromise;
-  const name = req.body.name
-  const dob = req.body.dob
-  const email = req.body.email
-  if(name & dob & email){
-      await db.run("INSERT INTO customers(name, Date_of_Birth, Email) VALUES (?,?,?)",
-                  name, dob, email)
-  }
-
+  //const name = req.body.firstname + " " + req.body.lastname
+  //const dob = req.body.dob
+/*
   const address = req.body.address
   const city = req.body.city
   const state = req.body.state
@@ -43,8 +38,8 @@ app.post('/register', async (req,res) => {
   if(address & city & state & country & postalCode){
     await db.run("INSERT INTO customer_private(Home Adress, City, State, Country, Postal Code)",
                 address, city, state, country, postalCode)
-  }
-
+  }*/
+  const email = req.body.email
   const username = req.body.username
   const password = req.body.pass
   //hashing the password
@@ -53,6 +48,8 @@ app.post('/register', async (req,res) => {
     await db.run("INSERT INTO customers(username,password) VALUES (?,?)", username, hashPassword)
     res.redirect("/")
     //res.send(`Hello ${username}, With Password ${password}`)
+  }else {
+    console.log("ERROR");
   }
 })
 app.get('/register', (req, res) => {
