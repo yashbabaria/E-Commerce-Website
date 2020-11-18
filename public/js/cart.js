@@ -77,7 +77,3 @@ function CheckBrowser() {
 			return false;
 	}
 }
-//-------------------------------------------------
-/*
-You can extend this script by inserting data to database or adding payment processing API to shopping cart..
-*/
