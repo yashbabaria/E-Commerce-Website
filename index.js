@@ -41,13 +41,13 @@ app.post('/register', async (req,res) => {
   const password = req.body.pass
 
   //hashing the password
-  //const hashPassword = await bcrypt.hash(password, saltRounds)
+  const hashPassword = await bcrypt.hash(password, saltRounds)
   const userTaken = await db.run("SELECT Username FROM customers WHERE Username=?", username)
   if(userTaken){
     console.log("Username taken");
   }else if(email && username && password){
     await db.run("INSERT INTO customers(firstname,lastname,Email,Username,Password) VALUES (?,?,?,?,?)",
-            firstname,lastname,email, username, password)
+            firstname,lastname,email, username, hashPassword)
               res.redirect("/")
     //res.send(`Hello ${username}, With Password ${password}`)
   }else {
@@ -56,7 +56,7 @@ app.post('/register', async (req,res) => {
 
 })
 app.get('/register', (req, res) => {
-  res.sendFile(__dirname + '/User\ SignUp/index.html')
+  res.sendFile(__dirname + '/public/User\ SignUp/index.html')
 })
 
 //Sign In Works
@@ -69,7 +69,8 @@ app.post('/login', async (req,res) => {
      // error username not found in database
      alert("Username not Found")
   }else{
-    if(!user.Password){
+    const passwordsMatch = await bcrypt.compare(password, user.password)
+    if(!passwordsMatch){
       // error password not found in database
       alert("The password is incorrect")
     }else{
@@ -82,7 +83,7 @@ app.post('/login', async (req,res) => {
 })
 
 app.get('/login', async (req,res) => {
-    res.sendFile(__dirname + '/User\ Login/index.html')
+    res.sendFile(__dirname + '/public/User\ Login/index.html')
 })
 
 app.get('/payment', async (req,res) => {
@@ -91,9 +92,10 @@ app.get('/payment', async (req,res) => {
 
 app.post('/payment', async (req,res) => {
   // Get the cart, add the prices, when the user clicks on the pay send to summary screen then go back home.
+
 })
 
-app.post('/address', async (req,res) =>
+app.post('/address', async (req,res) =>{
   //not working yet
   const home_address = req.body.home_address
   const billing_address = req.body.billing_address
