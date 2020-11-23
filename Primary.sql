@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS "OrderDetails" (
 );
 CREATE TABLE IF NOT EXISTS "Product" (
 	"Product_Id"	INTEGER,
-	"Name_Of_Product"	TEXT,
-	"Type_Of_Product"	TEXT,
+	"Name_of_Product"	TEXT,
+	"Type_of_Product"	TEXT,
 	"Description"	TEXT,
 	"Cost"	INTEGER,
 	"Approved"	TEXT,

@@ -6,17 +6,16 @@ const productsList = document.getElementById('products-list');
 const searchBar = document.getElementById('search-bar');
 
 /* A function to display page based on category chosen */
-function displayProducts(category) {
-    loadProducts(category);
-    return htmlString = products.map((product) => {
-        return `
-        <li class="product">
-            <h2>${product.name}</h2>
-            <p>Price: ${product.cost}</p>
-            
-        </li>
-        `;
-    })
+async function displayProducts(category) {
+    const res = await fetch('/product-api');
+    const data = await res.json();
+    for (item of data) {
+        console.log(item);
+        const root = document.createElement('div');
+        const name = document.createElement('h1');
+
+        name.textContent = `${item.name}`;
+    }
  }
  
  /* Setting filtering menu based on category chosen */

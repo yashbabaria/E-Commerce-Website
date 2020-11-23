@@ -4,11 +4,11 @@
 
  const sqlite3 = require('sqlite3').verbose();
  let products = [];
- let db = null;
+ let db;
 
  /* A function to open database */
- function openDatabase() {
-    db = new sqlite3.Database('Primary.sqlite', sqlite3.OPEN_READWRITE, (err) => {
+ async function openDatabase() {
+    db = await new sqlite3.Database('Primary.sqlite', sqlite3.OPEN_READWRITE, (err) => {
         if (err) 
         {
             console.log(err.message);
@@ -26,22 +26,37 @@
  }
 
 /* A function to add a new product to the product database */
-function addProductToStore(name, type="", description="", cost=0) {
-    openDatabase();
+async function addProductToStore(name, type="", description="", cost=0) {
+    await openDatabase();
+    const item = {
+        productName: name, 
+        productType: type, 
+        desc: description,
+        price: cost
+    };
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item)
+    };
+    fetch('/product-api', options);
+
     db.serialize(() => {
-        let sql = "INSERT INTO Product (Name_Of_Product, Type_Of_Product," +
+        let sql = "INSERT INTO Product (Name_of_Product, Type_of_Product," +
             " Description, Cost, Approved) VALUES (?,?,?,?,?)";
         db.run(sql, [name, type, description, cost, 'Pending'], (err) => {
             if (err) throw err;
             console.log(name + " is added to the list.");
         });
-      });
+    });
     closeDatabase();
 }
 
 /* A function to update a product in the product database */
-function updateProductInStore(id, name, newName=null, newType=null, newDescription=null, newCost=null) {
-    openDatabase();
+async function updateProductInStore(id, name, newName=null, newType=null, newDescription=null, newCost=null) {
+    await openDatabase();
     if (newName != null) updateProductName(id, name, newName);
     if (newType != null) updateProductType(id, name, newType);
     if (newDescription != null) updateProductDescription(id, name, newDescription);
@@ -94,8 +109,8 @@ function updateProductCost(id, name, newCost) {
 }
 
 /* A function to update a product's status in the product database */
-function updateProductStatus(id, name, newStatus) {
-    openDatabase();
+async function updateProductStatus(id, name, newStatus) {
+    await openDatabase();
     db.serialize(() => {
         let sql = "UPDATE Product SET Approved=? WHERE Product_Id=?";
         db.run(sql, [newStatus, id], (err) => {
@@ -107,8 +122,8 @@ function updateProductStatus(id, name, newStatus) {
 }
 
 /* A function to delete a product from the product database */
-function deleteProductFromStore(id, name) {
-    openDatabase();
+async function deleteProductFromStore(id, name) {
+    await openDatabase();
     db.serialize(() => {
         let sql = "DELETE FROM Product WHERE Product_Id=?";
         db.run(sql, [id], (err) => {
@@ -120,8 +135,8 @@ function deleteProductFromStore(id, name) {
 }
 
 /* A function to load all products */
-function loadProducts(category) {
-    openDatabase();
+async function loadProducts(category) {
+    await openDatabase();
     db.serialize(() => {
         let sql = `SELECT Name_Of_Product name,
                           Cost cost
@@ -166,7 +181,10 @@ function loadProducts(category) {
     return products;
 }
 
-addProductToStore('Some');
-loadProducts('All');
-deleteProductFromStore(1, 'Some');
-
+module.exports = {
+    add: addProductToStore,
+    update: updateProductInStore,
+    updateStatus: updateProductStatus,
+    delete: deleteProductFromStore,
+    load: loadProducts
+};

@@ -6,14 +6,13 @@
     "start": "node ./index.js"
   },
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-<<<<<<< Updated upstream
-=======
     "jquery": "^3.5.1",
+    "node-fetch": "^2.6.1",
     "sqlite": "^4.0.17",
->>>>>>> Stashed changes
     "sqlite3": "^5.0.0"
   }
 }

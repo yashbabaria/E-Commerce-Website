@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const sqlite3 = require('sqlite3');
 const sqlite = require('sqlite');
+global.fetch = require('node-fetch');
+
 var storage = require('./public/js/back-end/product-manager.js');
 var account = require('./public/js/back-end/account-manager.js');
 
