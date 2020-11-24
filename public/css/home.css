@@ -1,0 +1,59 @@
+/*---------------------------------------
+    HOME  & SLIDER            
+-----------------------------------------*/
+
+#home {
+    padding: 0;
+  }
+  
+  #home h1 {
+    color: #e4ebea;
+  }
+  
+  #home h3 {
+    color: #e4ebea;
+    font-size: 16px;
+    font-weight: 300;
+    margin: 0;
+    padding: 5px 0 40px 0;
+  }
+  
+  @media (min-width: 768px) {
+    .home-slider .col-md-6 {
+      padding-left: 0;
+    }
+  }
+  
+  .home-slider .caption {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    background-color: rgba(20,20,20,0.2);
+    height: 100%;
+    color: #e4ebea;
+    cursor: e-resize;
+  }
+  
+  .home-slider .item {
+    background-repeat: no-repeat;
+    background-attachment: local;
+    background-size: cover;
+    height: 650px;
+  }
+  
+  .caption h3 a { color: #e4ebea; }
+  .caption h3 a:hover { color: #FED79D; }
+  
+  .home-slider .item-first {
+    background-image: url("../assets/imgs/slider-image1.jpg");
+  background-position: center;
+  }
+  
+  .home-slider .item-second {
+    background-image: url("../assets/imgs/slider-image2.jpg");
+  }
+  
+  .home-slider .item-third {
+    background-image: url("../assets/imgs/slider-image3.jpg");
+  }

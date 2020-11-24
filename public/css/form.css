@@ -1,0 +1,86 @@
+/*------------------------------------------------
+    FORM STYLE
+-------------------------------------------------*/
+
+.form-body {
+    background: #678492;
+    padding: 50px;
+}
+
+.signin-form-container{
+    width: 400px;
+    height: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -250px;
+    margin-left: -200px;
+    border-radius: 50px;
+    background: #e4ebea;
+}
+
+.signup-form-container{
+    width: 400px;
+    height: 650px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -200px;
+    border-radius: 50px;
+    background: #e4ebea;
+}
+
+.signin-form-title {
+    width: 400px;
+    height: 135px;
+    background:  #F1AA6B;
+    color: #f9f9f9;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-top: -250px;
+    margin-left: -200px;
+    padding-top: 7px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+}
+
+.signup-form-title {
+    width: 400px;
+    height: 135px;
+    background:  #F1AA6B;
+    color: #f9f9f9;
+    position: relative;
+    top: 30%;
+    left: 50%;
+    margin-top: -250px;
+    margin-left: -200px;
+    padding-top: 7px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+}
+
+.input-field {
+    border-radius: 10px;
+    padding: 10px;
+    width: 95%;
+    border-width: 1px;
+}
+
+#signin-form {
+    margin-top: 75%;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#signup-form {
+    margin-top: 60%;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#back:hover {
+    color: white;
+    font-weight: bold;
+}
