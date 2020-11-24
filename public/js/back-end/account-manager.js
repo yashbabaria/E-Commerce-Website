@@ -16,7 +16,7 @@ async function openDatabase() {
 }
 
 /* A function to close database */
-async function closeDatabase() {
+function closeDatabase() {
    db.close((err) => {
        if (err) throw err;
        console.log('Database connection closed');
@@ -28,7 +28,7 @@ async function closeDatabase() {
 -----------------------------------------*/
 
 async function addUser(name, dob, email, password) {
-    openDatabase();
+    await openDatabase();
     if(name & dob & email){
         await db.run("INSERT INTO customers(name, Date_of_Birth, Email) VALUES (?,?,?)",
                     name, dob, email);
@@ -38,7 +38,7 @@ async function addUser(name, dob, email, password) {
 }
 
 async function addUserAddress(name, address, city, state, country, postalCode, password) {
-    openDatabase();
+    await openDatabase();
     if(address & city & state & country & postalCode){
         await db.run("INSERT INTO customer_private(Home Address, City, State, Country, Postal Code)",
                 address, city, state, country, postalCode);

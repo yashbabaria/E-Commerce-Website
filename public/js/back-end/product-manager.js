@@ -2,9 +2,7 @@
  * Code for adding, updating, and deleting products from the store and product database.
  */
 
- const sqlite3 = require('sqlite3').verbose();
- let products = [];
- let db;
+let db;
 
  /* A function to open database */
  async function openDatabase() {
@@ -43,7 +41,7 @@ async function addProductToStore(name, type="", description="", cost=0) {
     };
     fetch('/product-api', options);
 
-    db.serialize(() => {
+    await db.serialize(() => {
         let sql = "INSERT INTO Product (Name_of_Product, Type_of_Product," +
             " Description, Cost, Approved) VALUES (?,?,?,?,?)";
         db.run(sql, [name, type, description, cost, 'Pending'], (err) => {
@@ -65,8 +63,8 @@ async function updateProductInStore(id, name, newName=null, newType=null, newDes
 }
 
 /* A function to update a product's name in the product database */
-function updateProductName(id, name, newName) {
-    db.serialize(() => {
+async function updateProductName(id, name, newName) {
+    await db.serialize(() => {
         let sql = "UPDATE Product SET Name_Of_Product=? WHERE Product_Id=?";
         db.run(sql, [newName, id], (err) => {
             if (err) throw err;
@@ -76,8 +74,8 @@ function updateProductName(id, name, newName) {
 }
 
 /* A function to update a product's tpe in the product database */
-function updateProductType(id, name, newType) {
-    db.serialize(() => {
+async function updateProductType(id, name, newType) {
+    await db.serialize(() => {
         let sql = "UPDATE Product SET Type_Of_Product=? WHERE Product_Id=?";
         db.run(sql, [newType, id], (err) => {
             if (err) throw err;
@@ -87,8 +85,8 @@ function updateProductType(id, name, newType) {
 }
 
 /* A function to update a product's description in the product database */
-function updateProductDescription(id, name, newDescription) {
-    db.serialize(() => {
+async function updateProductDescription(id, name, newDescription) {
+    await db.serialize(() => {
         let sql = "UPDATE Product SET Description=? WHERE Product_Id=?";
         db.run(sql, [newDescription, id], (err) => {
             if (err) throw err;
@@ -98,8 +96,8 @@ function updateProductDescription(id, name, newDescription) {
 }
 
 /* A function to update a product's cost in the product database */
-function updateProductCost(id, name, newCost) {
-    db.serialize(() => {
+async function updateProductCost(id, name, newCost) {
+    await db.serialize(() => {
         let sql = "UPDATE Product SET Cost=? WHERE Product_Id=?";
         db.run(sql, [newCost, id], (err) => {
             if (err) throw err;
@@ -111,7 +109,7 @@ function updateProductCost(id, name, newCost) {
 /* A function to update a product's status in the product database */
 async function updateProductStatus(id, name, newStatus) {
     await openDatabase();
-    db.serialize(() => {
+    await db.serialize(() => {
         let sql = "UPDATE Product SET Approved=? WHERE Product_Id=?";
         db.run(sql, [newStatus, id], (err) => {
             if (err) throw err;
@@ -124,7 +122,7 @@ async function updateProductStatus(id, name, newStatus) {
 /* A function to delete a product from the product database */
 async function deleteProductFromStore(id, name) {
     await openDatabase();
-    db.serialize(() => {
+    await db.serialize(() => {
         let sql = "DELETE FROM Product WHERE Product_Id=?";
         db.run(sql, [id], (err) => {
             if (err) throw err;
@@ -137,7 +135,7 @@ async function deleteProductFromStore(id, name) {
 /* A function to load all products */
 async function loadProducts(category) {
     await openDatabase();
-    db.serialize(() => {
+    await db.serialize(() => {
         let sql = `SELECT Name_Of_Product name,
                           Cost cost
                           FROM Product`;
