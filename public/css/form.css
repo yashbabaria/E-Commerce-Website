@@ -21,17 +21,18 @@
 
 .signup-form-container{
     width: 400px;
-    height: 650px;
+    height: 745px;
     position: absolute;
-    top: 50%;
+    top: 30%;
     left: 50%;
-    margin-top: -300px;
+    margin-top: -200px;
     margin-left: -200px;
     border-radius: 50px;
     background: #e4ebea;
 }
 
 .signin-form-title {
+    max-width: 100%;
     width: 400px;
     height: 135px;
     background:  #F1AA6B;
@@ -75,7 +76,7 @@
 }
 
 #signup-form {
-    margin-top: 60%;
+    margin-top: 65%;
     padding-left: 30px;
     padding-right: 30px;
 }
@@ -83,4 +84,14 @@
 #back:hover {
     color: white;
     font-weight: bold;
+}
+
+#center-text {
+    max-width: 100%;
+    text-align: center;
+}
+
+#right-text {
+    max-width: 100%;
+    text-align: right;
 }

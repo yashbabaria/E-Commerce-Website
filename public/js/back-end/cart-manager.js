@@ -2,7 +2,8 @@
  * Code for adding, updating, and deleting products from the cart and order database.
  */
 
-const sqlite3 = require('sqlite3').verbose();
+const sqlite = require('sqlite');
+const sqlite3 = require('sqlite3');
 
  /* A function to open database */
  function openDatabase() {

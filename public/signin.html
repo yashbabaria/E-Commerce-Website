@@ -24,14 +24,14 @@
 			<a href="index.html"><pre id="back">   back</pre></a>
 			<h1> <center>SIGN IN</center> </h1>
 		</div>
-		<form id="signin-form">
+		<form id="signin-form" action="/login" method="POST">
 			<label>Username:</label>
-			<input type="text" class="input-field" placeholder="Username..."/> <br><br>
+			<input type="text" class="input-field" name="username" placeholder="Username or email..."/> <br><br>
 			<label>Password :</label>
-			<input type="password" class="input-field" placeholder="Password..."/> <br><br>
-			<label class="ra">Forgot <a href="#">Username</a>/<a href="#">Password</a></label> 
-			<br><br><button type="submit"><b>SIGN IN</b></button><br><br>
-			<label class="ca">Do not have an account? <a href="signup.html">Click here</a></label>
+			<input type="password" class="input-field" name="password" placeholder="Password..."/>
+			<p id="right-text">Forgot <a href="#">Username</a>/<a href="#">Password</a></p> 
+			<button type="submit"><b>SIGN IN</b></button>
+			<p id="center-text">Do not have an account? <a href="signup.html">Click here</a></p>
 		</form>
 	</div>	
 

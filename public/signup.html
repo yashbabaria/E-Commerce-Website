@@ -24,19 +24,21 @@
 			<a href="index.html"><pre id="back">    back</pre></a>
 			<h1> <center>SIGN UP</center> </h1>
 		</div>
-		<form id="signup-form">
+		<form id="signup-form" action="/register" method="POST">
 			<label>First Name:</label>
-			<input type="text" class="input-field" placeholder="First name..."/> <br><br>
+			<input type="text" class="input-field" name="first-name" placeholder="First name..."/> <br><br>
 			<label>Last Name:</label>
-			<input type="text" class="input-field" placeholder="Last name..."/> <br><br>
+			<input type="text" class="input-field" name="last-name" placeholder="Last name..."/> <br><br>
 			<label>Username:</label>
-			<input type="text" class="input-field" placeholder="Username..."/> <br><br>
-			<label>Password :</label>
-			<input type="password" class="input-field" placeholder="Password..."/> <br><br>
+			<input type="text" class="input-field" name="username" placeholder="Username..."/> <br><br>
 			<label>Email:</label>
-			<input type="text" class="input-field" placeholder="Email..."/> <br><br>
-			<br><button type="submit"><b>SIGN UP</b></button><br><br>
-			<label class="ca">Already have an account? <a href="signin.html">Click here</a></label>
+			<input type="text" class="input-field" name= "email" placeholder="Email..."/> <br><br>
+			<label>Password :</label>
+			<input type="password" class="input-field" name="password" placeholder="Password..."/> <br><br>
+			<label>Confirm Password :</label>
+			<input type="password" class="input-field" placeholder="Password..."/> <br><br>
+			<br><button type="submit"><b>SIGN UP</b></button>
+			<p id="center-text">Already have an account? <a href="signin.html">Click here</a></p>
 		</form>
 	</div>	
 
