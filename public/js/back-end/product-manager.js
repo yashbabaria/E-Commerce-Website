@@ -1,35 +1,20 @@
 /*
  * Code for adding, updating, and deleting products from the store and product database.
  */
-
-const sqlite = require('sqlite');
-const sqlite3 = require('sqlite3');
-let products = [];
-let db;
+const dbPromise = require('../../../index'); 
 
  /* A function to open database */
  async function openDatabase() {
-    const dbPromise = sqlite.open({
-        filename: "Primary.sqlite",
-        driver: sqlite3.Database,
-      });
     try { 
-        db = await dbPromise; 
+        db = await dbPromise.dbPromise; 
+        console.log("Connected to product database");
     } catch { 
         console.log("Database error");
     }
 }
 
- /* A function to close database */
- function closeDatabase() {
-    db.close((err) => {
-        if (err) throw err;
-        console.log('Database connection closed');
-    });
- }
-
 /* A function to add a new product to the product database */
-async function addProductToStore(name, type="", description="", cost=0) {
+async function addProductToStore(name, type="", description="", cost=0, image="") {
     await openDatabase();
     const item = {
         productName: name, 
@@ -46,28 +31,28 @@ async function addProductToStore(name, type="", description="", cost=0) {
     };
     fetch('/product-api', options);
 
-    let sql = "INSERT INTO Product (Name_of_Product, Type_of_Product," +
-        " Description, Cost, Approved) VALUES (?,?,?,?,?)";
-    await db.run(sql, [name, type, description, cost, 'Pending'], (err) => {
+    let sql = `INSERT INTO Products(name, type, description, cost, status, 
+        image, rating, review_number) VALUES (?,?,?,?,?,?,?,?)`;
+    await db.run(sql, [name, type, description, cost, 'Pending', image, 0, 0], (err) => {
         if (err) throw err;
         console.log(name + " is added to the list.");
     });
-    closeDatabase();
+    
 }
 
 /* A function to update a product in the product database */
 async function updateProductInStore(id, name, newName=null, newType=null, newDescription=null, newCost=null) {
     await openDatabase();
-    if (newName != null) updateProductName(id, name, newName);
-    if (newType != null) updateProductType(id, name, newType);
-    if (newDescription != null) updateProductDescription(id, name, newDescription);
-    if (newCost != null) updateProductCost(id, name, newCost);
-    closeDatabase();
+    if (newName != null) updateProductName(id, newName);
+    if (newType != null) updateProductType(id, newType);
+    if (newDescription != null) updateProductDescription(id, newDescription);
+    if (newCost != null) updateProductCost(id, newCost);
+    
 }
 
 /* A function to update a product's name in the product database */
-async function updateProductName(id, name, newName) {
-    let sql = "UPDATE Product SET Name_Of_Product=? WHERE Product_Id=?";
+async function updateProductName(id, newName) {
+    let sql = "UPDATE Products SET name=? WHERE product_id=?";
     await db.run(sql, [newName, id], (err) => {
         if (err) throw err;
         console.log(name + "'s name is updated to " + newName + ".");
@@ -75,8 +60,8 @@ async function updateProductName(id, name, newName) {
 }
 
 /* A function to update a product's tpe in the product database */
-async function updateProductType(id, name, newType) {
-    let sql = "UPDATE Product SET Type_Of_Product=? WHERE Product_Id=?";
+async function updateProductType(id, newType) {
+    let sql = "UPDATE Products SET type=? WHERE product_id=?";
     await db.run(sql, [newType, id], (err) => {
         if (err) throw err;
         console.log(name + "'s type is updated.");
@@ -84,8 +69,8 @@ async function updateProductType(id, name, newType) {
 }
 
 /* A function to update a product's description in the product database */
-async function updateProductDescription(id, name, newDescription) {
-    let sql = "UPDATE Product SET Description=? WHERE Product_Id=?";
+async function updateProductDescription(id, newDescription) {
+    let sql = "UPDATE Products SET description=? WHERE product_id=?";
     await db.run(sql, [newDescription, id], (err) => {
         if (err) throw err;
         console.log(name + "'s description is updated.");
@@ -93,8 +78,8 @@ async function updateProductDescription(id, name, newDescription) {
 }
 
 /* A function to update a product's cost in the product database */
-async function updateProductCost(id, name, newCost) {
-    let sql = "UPDATE Product SET Cost=? WHERE Product_Id=?";
+async function updateProductCost(id, newCost) {
+    let sql = "UPDATE Products SET cost=? WHERE product_id=?";
     await db.run(sql, [newCost, id], (err) => {
         if (err) throw err;
         console.log(name + "'s cost is updated.");
@@ -102,69 +87,59 @@ async function updateProductCost(id, name, newCost) {
 }
 
 /* A function to update a product's status in the product database */
-async function updateProductStatus(id, name, newStatus) {
+async function updateProductStatus(id, newStatus) {
     await openDatabase();
-    let sql = "UPDATE Product SET Approved=? WHERE Product_Id=?";
+    let sql = "UPDATE Products SET status=? WHERE product_id=?";
     await db.run(sql, [newStatus, id], (err) => {
         if (err) throw err;
         console.log(name + "'s status is updated.");
     });
-    closeDatabase();
+    
 }
 
 /* A function to delete a product from the product database */
-async function deleteProductFromStore(id, name) {
+async function deleteProductFromStore(id) {
     await openDatabase();
-    let sql = "DELETE FROM Product WHERE Product_Id=?";
+    let sql = "DELETE FROM Products WHERE product_id=?";
     await db.run(sql, [id], (err) => {
         if (err) throw err;
         console.log(name + " is deleted.");
     });
-    closeDatabase();
+    
 }
 
 /* A function to load all products */
 async function loadProducts(category) {
     await openDatabase();
-    let sql = `SELECT Name_Of_Product name,
-                        Cost cost
-                        FROM Product`;
+    let sql = `SELECT name name,
+                        cost cost
+                        FROM Products`;
     switch (category) {
         case 'Mask':
-            sql += " WHERE Type_Of_Product='Mask'";
+            sql += " WHERE type='Mask'";
             break;
 
         case 'PPE':
-            sql += " WHERE Type_Of_Product='PPE'";
+            sql += " WHERE type='PPE'";
             break;
 
         case 'Essentials':
-            sql += " WHERE Type_Of_Product='Essentials'";
+            sql += " WHERE type='Essentials'";
             break;
 
         case 'Pharm':
-            sql += " WHERE Type_Of_Product='Pharm'";
+            sql += " WHERE type='Pharm'";
             break;
 
         case 'Other':
-            sql += " WHERE Type_Of_Product='Other'";
+            sql += " WHERE type='Other'";
+
+        default:
     }
 
-    sql += " ORDER BY Name_Of_Product";
+    sql += " ORDER BY name";
     
-    await db.all(sql, (err, rows) => {
-        if (err) throw err;
-
-        if(rows){
-            rows.forEach(product => {                    
-                products.push({name:product.name, cost:product.cost});
-            });
-        } else {
-            console.log("There is no product in the store.");
-        }
-    });
-    
-    closeDatabase();
+    const products = await db.all(sql);
     return products;
 }
 

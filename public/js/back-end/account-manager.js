@@ -4,19 +4,14 @@
 
 /* A function to open database */
 
-const sqlite = require('sqlite');
-const sqlite3 = require('sqlite3');
 const bcrypt = require('bcrypt');
-let db;
+const dbPromise = require('../../../index');
 
  /* A function to open database */
 async function openDatabase() {
-    const dbPromise = sqlite.open({
-        filename: "Primary.sqlite",
-        driver: sqlite3.Database,
-      });
     try { 
-        db = await dbPromise; 
+        db = await dbPromise.dbPromise; 
+        console.log("Connected to account database");
     } catch { 
         console.log("Database error");
     }
@@ -34,51 +29,52 @@ function closeDatabase() {
   Database               
 -----------------------------------------*/
 
-async function addUser(firstName, lastName, username, email, password, confirmPassword) {
+// Adding a new user account to database during registration
+async function addUser(type, firstName, lastName, username, email, password, confirmPassword) {
     await openDatabase();
-    if (firstName, lastName, username, password, confirmPassword, email) {
-        await db.run("INSERT INTO customers(name, Date_of_Birth, Email) VALUES (?,?,?)",
-                    name, dob, email);
+    console.log("{" + type + " " + firstName + " " + lastName + " "+ username + " "+ email + " "+ password + " " + confirmPassword + "}");
+    if (type, firstName, lastName, username, email, password, confirmPassword) {
+        if (password == confirmPassword) {
+            let hashedPassword = await bcrypt.hash(password, 10);
+            await db.run(`INSERT INTO Users(first_name, last_name, username, email, password, 
+                account_type) VALUES (?,?,?,?,?,?)`,
+                firstName, lastName, username, email, hashedPassword, type);
+            
+            return;
+        } else {
+            return "The passwords do not match";
+        }
     } else {
-        // TODO
+        return "Please fill out all forms with valid inputs";
     }
-    hashPswd(name, password);
-    closeDatabase();
 }
 
-async function addUserAddress(name, address, city, state, country, postalCode, password) {
+// Adding user's address to the account per checkout preference
+async function addUserAddress(id, address, city, state, country, zip) {
     await openDatabase();
     if(address & city & state & country & postalCode){
-        await db.run("INSERT INTO customer_private(Home Address, City, State, Country, Postal Code)",
-                address, city, state, country, postalCode);
+        await db.run("INSERT INTO UserDetails(user_id, address, city, state, country, zip) VALUES (?,?,?,?,?,?)",
+                id, address, city, state, country, zip);
     }
-    closeDatabase();
+    
 }
 
-async function hashPswd(username, password) {
-    const hashPassword = await bcrypt.hash(password, saltRounds);
-    if (username && password) {
-        await db.run("INSERT INTO customers(username,password) VALUES (?,?)", username, hashPassword);
-    }
-}
-
+// Processing user's login request
 async function loginUser(username, password) {
+    console.log("Login: {" + username + " " + password + "}");
     try {
         await openDatabase();
-        const user = await db.get("SELECT * FROM customers WHERE username=?", username);
+        const user = await db.get("SELECT * FROM Users WHERE username=?", username);
         if (!user) {
             // error username not found in database
-            return false;
+            return;
         }
-        const userPassword = await db.get("SELECT password FROM customers WHERE username=?", username);
-        const passwordMatches = await bcrypt.compare(password, userPassword);
-        console.log(user.password);
+        const passwordMatches = await bcrypt.compare(password, user.password);
         if(!passwordMatches){
             // error password not found in database            
-            return false;
+            return;
         }
-        closeDatabase();
-        return true;
+        return user.user_id;
     } catch {
         console.log("Error in user login");
     }

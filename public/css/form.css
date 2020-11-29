@@ -21,7 +21,7 @@
 
 .signup-form-container{
     width: 400px;
-    height: 745px;
+    height: 830px;
     position: absolute;
     top: 30%;
     left: 50%;
@@ -70,13 +70,13 @@
 }
 
 #signin-form {
-    margin-top: 75%;
+    margin-top: 70%;
     padding-left: 30px;
     padding-right: 30px;
 }
 
 #signup-form {
-    margin-top: 65%;
+    margin-top: 67%;
     padding-left: 30px;
     padding-right: 30px;
 }
@@ -94,4 +94,10 @@
 #right-text {
     max-width: 100%;
     text-align: right;
+}
+
+#error-message {
+    color: red;
+    text-align: center;
+    font-size: 14px;
 }

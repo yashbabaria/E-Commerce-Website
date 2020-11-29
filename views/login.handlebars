@@ -1,0 +1,23 @@
+<!--SIGN IN FORM-->
+<div class="signin-form-container">
+	<div class="signin-form-title">
+		<a href="/"><pre id="back">   back</pre></a>
+		<h1> <center>SIGN IN</center> </h1>
+	</div>
+
+	<form id="signin-form" action="/login" method="POST">
+		<!-- Section for displaying error message --->
+		{{#if error}}
+		<div id="error-message">
+			{{error}}
+		</div>
+		{{/if}} <br>
+		<label>Username:</label>
+		<input type="text" class="input-field" name="username" placeholder="Username or email..."/> <br><br>
+		<label>Password :</label>
+		<input type="password" class="input-field" name="password" placeholder="Password..."/>
+		<p id="right-text">Forgot <a href="#">Username</a>/<a href="#">Password</a></p> 
+		<button type="submit"><b>SIGN IN</b></button>
+		<p id="center-text">Do not have an account? <a href="/register">Click here</a></p>
+	</form>
+</div>	
