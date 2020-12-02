@@ -14,40 +14,28 @@ const dbPromise = require('../../../index');
 }
 
 /* A function to add a new product to the product database */
-async function addProductToStore(name, type="", description="", cost=0, image="") {
+async function addProductToStore(name, seller_id, type, description="", cost, image="") {
     await openDatabase();
-    const item = {
-        productName: name, 
-        productType: type, 
-        desc: description,
-        price: cost
-    };
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(item)
-    };
-    fetch('/product-api', options);
-
-    let sql = `INSERT INTO Products(name, type, description, cost, status, 
-        image, rating, review_number) VALUES (?,?,?,?,?,?,?,?)`;
-    await db.run(sql, [name, type, description, cost, 'Pending', image, 0, 0], (err) => {
-        if (err) throw err;
-        console.log(name + " is added to the list.");
-    });
+    if (name, seller_id, cost) {
+        await db.run(`INSERT INTO Products(name, seller_id, type, description, cost, status, 
+            image, rating, review_number) VALUES (?,?,?,?,?,?,?,?,?)`,
+            name, seller_id, type, description, cost, "Waiting for Approval", image, 0, 0);
+        console.log("Add product: {" + name + " " + type + " " + description + " "+ cost + " "+ image + "}");        
+        return;
+    } else {
+        return "Please fill out all forms with valid inputs";
+    }
     
 }
 
 /* A function to update a product in the product database */
-async function updateProductInStore(id, name, newName=null, newType=null, newDescription=null, newCost=null) {
+async function updateProductInStore(id, newName=null, newType=null, newDescription=null, newCost=null, newImage=null) {
     await openDatabase();
     if (newName != null) updateProductName(id, newName);
     if (newType != null) updateProductType(id, newType);
     if (newDescription != null) updateProductDescription(id, newDescription);
-    if (newCost != null) updateProductCost(id, newCost);
-    
+    if (newCost != null) updateProductCost(id, newCost); 
+    if (newImage != null) updateProductImage(id, newImage); 
 }
 
 /* A function to update a product's name in the product database */
@@ -97,6 +85,17 @@ async function updateProductStatus(id, newStatus) {
     
 }
 
+/* A function to update a product's image path in the product database */
+async function updateProductImage(id, newImage) {
+    await openDatabase();
+    let sql = "UPDATE Products SET image=? WHERE product_id=?";
+    await db.run(sql, [newImage, id], (err) => {
+        if (err) throw err;
+        console.log(name + "'s image is updated.");
+    });
+    
+}
+
 /* A function to delete a product from the product database */
 async function deleteProductFromStore(id) {
     await openDatabase();
@@ -109,37 +108,22 @@ async function deleteProductFromStore(id) {
 }
 
 /* A function to load all products */
-async function loadProducts(category) {
+async function loadProducts(constraint=null, param=null) {
     await openDatabase();
-    let sql = `SELECT name name,
-                        cost cost
-                        FROM Products`;
-    switch (category) {
-        case 'Mask':
-            sql += " WHERE type='Mask'";
-            break;
-
-        case 'PPE':
-            sql += " WHERE type='PPE'";
-            break;
-
-        case 'Essentials':
-            sql += " WHERE type='Essentials'";
-            break;
-
-        case 'Pharm':
-            sql += " WHERE type='Pharm'";
-            break;
-
-        case 'Other':
-            sql += " WHERE type='Other'";
-
-        default:
+    var products;
+    var sql = `SELECT Products.name, Products.type, Products.description, Products.cost,
+        Products.status, Products.image, Products.rating, Products.review_number, 
+        Users.username as seller
+        FROM Products LEFT JOIN Users WHERE Products.seller_id=Users.user_id `;
+    if (constraint && param) {
+        sql += constraint;
+        sql +=" ORDER BY Products.name";
+        products = await db.all(sql, param);
+    } else {
+        sql +=" ORDER BY Products.name";
+        products = await db.all(sql);
     }
 
-    sql += " ORDER BY name";
-    
-    const products = await db.all(sql);
     return products;
 }
 

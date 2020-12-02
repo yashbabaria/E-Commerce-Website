@@ -31,6 +31,18 @@
     background: #e4ebea;
 }
 
+.add-product-form-container{
+    width: 400px;
+    height: 675px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -325px;
+    margin-left: -200px;
+    border-radius: 50px;
+    background: #e4ebea;
+}
+
 .signin-form-title {
     max-width: 100%;
     width: 400px;
@@ -77,6 +89,12 @@
 
 #signup-form {
     margin-top: 67%;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#add-product-form {
+    margin-top: 65%;
     padding-left: 30px;
     padding-right: 30px;
 }

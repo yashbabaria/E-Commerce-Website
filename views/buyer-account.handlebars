@@ -1,0 +1,107 @@
+<section class="account-page ptb-50">
+    <div class="container"> 
+    <h1> Customer Account </h1>
+        <div class="row">  
+            <aside class="col-md-9 col-sm-8 ptb-15">
+                <div class="panel-group accordion-panel" id="accordion">
+                    <div class="panel"> 
+                        <div class="accordion-heading">                              
+                            <a class="title-2" data-toggle="collapse" data-parent="#accordion" href="#accordion-1" aria-expanded="true"> 
+                                <i class="fa fa-caret-right"></i> <strong> My Account </strong> 
+                            </a>                              
+                        </div>
+                        <div id="accordion-1" class="panel-collapse collapse in">
+                            <div class="account-body">
+                                <p> Username: {{user.username}} </p>
+                                <p> Name: {{user.first_name}} {{user.last_name}} </p>
+                                <p> Email: {{user.email}} </p>
+                                {{#if details}}
+                                    <p> Address: {{details.address}}, {{details.city}}, {{details.state}}, {{details.country}}, {{details.zip}} </p>
+                                    {{else}}
+                                    <br>
+                                    <form action="/add-address" method="POST">
+                                        <h5>Add your address for a faster checkout. </h4>
+                                        {{#if error}}
+                                        <div id="error-message">
+                                            {{error}}
+                                        </div>
+                                        {{/if}} <br>
+                                        <label>Address:</label>
+                                        <input type="text" class="input-field" name="address" placeholder="Address..."/> <br>
+                                        <label>City :</label>
+                                        <input type="text" class="input-field" name="city" placeholder="City..."/> <br>
+                                        <label>State :</label>
+                                        <input type="text" class="input-field" name="state" placeholder="State..."/> <br>
+                                        <label>Country :</label>
+                                        <input type="text" class="input-field" name="country" placeholder="Country..."/> <br>
+                                        <label>Zip/Postal Code :</label>
+                                        <input type="number" class="input-field" name="zip" placeholder="Zip or Postal Code..."/> <br>
+                                        <label>Password :</label>
+                                        <input type="password" class="input-field" name="password" placeholder="Password..."/> <br><br>                       
+                                        <button type="submit">Add Address</button>
+                                    </form>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel"> 
+                        <div class="accordion-heading">                              
+                            <a class="title-2" data-toggle="collapse" data-parent="#accordion" href="#accordion-2">
+                                <i class="fa fa-caret-right"></i> <strong> Orders and Returns </strong>  
+                            </a>                              
+                        </div>
+                        <div id="accordion-2" class="panel-collapse collapse">
+                            <div class="account-body">
+                                <ul class="acnt-list">
+                                    {{#each orderDetails}}
+                                    <li class="order-details">
+                                        <p>ID#: {{this.order_id}}</p>
+                                        <p>Order date: {{order_date}}</p>
+                                        <p>Shipping address: {{this.shipping_address}}</p>
+                                        <p>Status: {{this.status}}</p>
+                                    </li>
+                                    {{/each}}
+
+                                    {{#each orders}}
+                                    <li class="order-items">
+                                        {{this.item}} says {{this.content}}
+                                    </li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel"> 
+                        <div class="accordion-heading">                              
+                            <a class="title-2" data-toggle="collapse" data-parent="#accordion" href="#accordion-3">  
+                                <i class="fa fa-caret-right"></i> <strong> Newsletter </strong> 
+                            </a>                              
+                        </div>
+                        <div id="accordion-3" class="panel-collapse collapse">
+                            <div class="account-body">
+                                [This week newsletter]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>                        
+            
+            <!-- SIDEBAR --> 
+            <aside class="col-md-3 col-sm-4">
+                <div class="widget-wrap">
+                    <h2 class="widget-title"> Account Setting </h2>
+                    <div class="divider-full-1"></div>
+                    <ul class="cate-widget">
+                        <li> <a href="#"> Account Information </a></li>                                      
+                        <li> <a href="#"> Reviews and Ratings</a></li>
+                        <li> <a href="#"> Newsletter Subscription</a></li>
+                        <li> <a href="/signout"> Sign Out</a></li>
+                    </ul>
+                </div>
+            </aside>   
+
+        </div>
+    </div>
+</section>

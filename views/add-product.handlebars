@@ -1,0 +1,33 @@
+<!--ADD PRODUCTS FORM-->
+<div class="add-product-form-container">
+	<div class="signup-form-title">
+		<a href="/login"><pre id="back">    back</pre></a>
+		<h1> <center>ADD PRODUCT</center> </h1>
+	</div>
+
+	<form id="add-product-form" action='/add-product' method="POST">
+		<!-- Section for displaying error message --->
+		{{#if error}}
+		<div id="error-message">
+			{{error}}
+		</div>
+		{{/if}} <br>
+		<label>Product Name:</label>
+		<input type="text" class="input-field" name="name" placeholder="Product name..."/> <br><br>
+		<label>Type:</label>
+		<select class="input-field" name="type" style="width: 100%">
+			<option value="Other">Other</option>
+			<option value="Mask">Mask</option>
+			<option value="PPE">PPE</option>
+			<option value="Essential">Essential</option>
+			<option value="Pharm">Pharm</option>
+		</select> <br><br>
+		<label>Description:</label>
+		<input type="text" class="input-field" name="description" placeholder="Description..."/> <br><br>
+		<label>Cost:</label>
+		<input type="number" class="input-field" name= "cost" placeholder="Cost..."/> <br><br>
+        <label>Image:</label>
+		<input type="text" class="input-field" name= "image" placeholder="Image file name..."/> <br><br>
+		<br><button type="submit"><b>ADD PRODUCT</b></button>
+	</form>
+</div>

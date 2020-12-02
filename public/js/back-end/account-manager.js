@@ -17,14 +17,6 @@ async function openDatabase() {
     }
 }
 
-/* A function to close database */
-function closeDatabase() {
-   db.close((err) => {
-       if (err) throw err;
-       console.log('Database connection closed');
-   });
-}
-
 /*---------------------------------------
   Database               
 -----------------------------------------*/
@@ -32,7 +24,7 @@ function closeDatabase() {
 // Adding a new user account to database during registration
 async function addUser(type, firstName, lastName, username, email, password, confirmPassword) {
     await openDatabase();
-    console.log("{" + type + " " + firstName + " " + lastName + " "+ username + " "+ email + " "+ password + " " + confirmPassword + "}");
+    console.log("Registration: {" + type + " " + firstName + " " + lastName + " "+ username + " "+ email + " "+ password + " " + confirmPassword + "}");
     if (type, firstName, lastName, username, email, password, confirmPassword) {
         if (password == confirmPassword) {
             let hashedPassword = await bcrypt.hash(password, 10);
@@ -50,11 +42,20 @@ async function addUser(type, firstName, lastName, username, email, password, con
 }
 
 // Adding user's address to the account per checkout preference
-async function addUserAddress(id, address, city, state, country, zip) {
+async function addUserAddress(id, address, city, state, country, zip, password) {
     await openDatabase();
-    if(address & city & state & country & postalCode){
-        await db.run("INSERT INTO UserDetails(user_id, address, city, state, country, zip) VALUES (?,?,?,?,?,?)",
-                id, address, city, state, country, zip);
+    const userPassword = await db.get("SELECT password FROM Users WHERE user_id=?", id);
+    const passwordMatches = await bcrypt.compare(password, userPassword.password);
+    if (address && city && state && country && zip && password) {
+        if (passwordMatches) {
+            await db.run("INSERT INTO UserDetails(user_id, address, city, state, country, zip) VALUES (?,?,?,?,?,?)",
+                    id, address, city, state, country, zip);
+            console.log("Registration: {" + address + " " + city + " " + state + " "+ country + " "+ zip + "}");
+        } else {
+            return "The password you inputted is incorrect."
+        }
+    } else {
+        return "Please answer all the fields.";
     }
     
 }

@@ -1,0 +1,133 @@
+<div>
+    <div id="content-login" class="container">
+            
+        <h2>Shopping Cart</h2>
+    
+        <form action="/update-cart" method="POST">
+            <div class="cart-info">
+                <table>
+                    <thead>
+                    <tr>
+
+                        <td class="remove">Remove</td>
+                        <td class="image">Image</td>
+                        <td class="name">Product Name</td>
+                        <td class="seller">Seller</td>
+                        <td class="quantity">Quantity</td>
+                        <td class="price">Unit Price</td>
+
+                        <td class="total">Total</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {{#each items}}
+                        <tr>
+                        <td class="remove"><input type="checkbox" name="remove" /></td>
+                        <td class="image"><img src={{this.image}} alt={{this.name}} title={{this.name}} /></a>
+                        </td>
+
+                        <td class="name"><a href="#">{{this.name}}</a>
+                        </td>
+                        <td class="model">{{this.product_id}}</td>
+                        <td class="quantity"><input type="text" name="quantity" size="3" /></td>
+
+                        <td class="price">{{this.price}}</td>
+                        <td class="total">{{calculate-price}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <div class="cart-module">
+            <div>
+                <div class="cart-heading">Shipping Addres</div>
+                <div class="cart-content">
+                    <p>Enter the location of where you want to ship your order to.</p>
+                    <table id="shipping">
+                        <tr>
+                            <td><span class="required">*</span> State</td>
+                            <td><input type="text" name="state" value="" /></td>
+                        </tr>
+                        <tr>
+                            <td><span class="required">*</span> Country</td>
+                            <td><input type="text" name="country" value="" /></td>
+                        </tr>
+                        <tr>
+                            <td><span class="required">*</span> Post Code:</td>
+                            <td><input type="text" name="postcode" value="" /></td>
+                        </tr>
+
+                    </table>
+                    <a id="button-quote" class="button"><span>Save Address</span></a>
+                    <div id="quote" style="display: none;"></div>
+                    <input type="hidden" name="shipping_method" value="" />
+                </div>
+        </div>
+
+        <div>
+            <div class="cart-heading">Gift or Discount Voucher</div>
+            <div class="cart-content" id="coupon">Enter your coupon code here:&nbsp;
+            <input type="text" name="coupon" value="" />
+            &nbsp;<a id="button-coupon" class="button"><span>Apply Coupon</span></a></div>
+        </div>
+        <div>
+            <div class="cart-heading">Payment Details</div>
+            <div class="cart-content" id="payment">
+                <h3>Payment</h3>
+                <label for="fname">Accepted Cards</label>
+                <div class="icon-container">
+                <i class="fa fa-cc-visa" style="color:navy;"></i>
+                <i class="fa fa-cc-amex" style="color:blue;"></i>
+                <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                <i class="fa fa-cc-discover" style="color:orange;"></i>
+                </div>
+                <form>
+                    <label for="cname">Name on Card</label>
+                    <input type="text" id="cname" name="cardname" placeholder="Name...">
+                    <label for="ccnum">Credit card number</label>
+                    <input type="text" id="ccnum" name="cardnumber" placeholder="Card Number...">
+                    <label for="expmonth">Exp Month</label>
+                    <input type="text" id="expmonth" name="expmonth" placeholder="Month...">
+                    <div class="row">
+                        <div class="col-50">
+                            <label for="expyear">Exp Year</label>
+                            <input type="text" id="expyear" name="expyear" placeholder="Year...">
+                        </div>
+                        <div class="col-50">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" name="cvv" placeholder="CVV...">
+                        </div>
+                    </div>
+                </form>  
+            </div>  
+        </div>
+    </div>
+    <div class="cart-total">
+        <table>
+        <tr>
+
+            <td colspan="5"></td>
+            <td class="right"><b>Sub-Total:</b></td>
+            <td class="right total">{{calculate-subtotal}}</td>
+        </tr>
+        <tr>
+            <td colspan="5"></td>
+            <td class="right"><b>Tax + Shipping:</b></td>
+
+            <td class="right  total">{{calculate-misc}}</td>
+        </tr>
+        <tr>
+            <td colspan="5"></td>
+            <td class="right"><b>Total:</b></td>
+            <td class="right  total">{{calculate-total}}</td>
+        </tr>
+
+        </table>
+    </div>
+    <div class="buttons">
+        <div class="left"><a onclick="$('#basket').submit();" class="button larger"><span>Update</span></a></div>
+        <div class="right"><a href="http://goinventive.co.uk/themes/shopcart/index.php?route=checkout/checkout" class="button larger"><span>Checkout</span></a></div>
+        <div class="center"><a href="http://goinventive.co.uk/themes/shopcart/index.php?route=common/home" class="button larger"><span>Continue Shopping</span></a></div>
+    </div>
+</div><!-- << page content >> -->

@@ -147,6 +147,10 @@ a:hover, a:active, a:focus {
   color: #e4ebea;
 }
 
+.mini-submit-btn {
+  width: 30%;
+}
+
 section {
   position: relative;
   padding: 100px 0;
@@ -175,8 +179,7 @@ button {
 }
 
 button:hover {
-  color: black;
-  background: #FED79D;
+  background: #f5c071;
 }
 
 .section-btn {
@@ -326,158 +329,6 @@ button:hover {
   background: #252525;
   border-color: transparent;
 }
-
-
-/*---------------------------------------
-    ABOUT US              
------------------------------------------*/
-
-#about {
-  background: #FED79D;
-}
-
-.team-thumb {
-  background: #e4ebea;
-  position: relative;
-  overflow: hidden;
-  text-align: left;
-}
-
-.team-info {
-  padding: 20px 30px;
-}
-
-.team-image img {
-  width: 100%;
-}
-
-.team-thumb .social-icon {
-  border-top: 1px solid #e4ebea;
-  padding: 4px 20px 0 20px;
-}
-
-.team-thumb .social-icon li a {
-  background: #e4ebea;
-  color: #012B36;
-}
-
-.team-info h3 {
-  margin: 0;
-}
-
-
-/*---------------------------------------
-    STORE              
------------------------------------------*/
-
-#store {
-  background: #e4ebea;
-}
-
-#search-bar {
-  padding: 7px;
-  border: none;
-}
-
-.submenu {
-  position: relative;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-.submenu-button {
-  padding: 10px;
-  color: #e4ebea;
-  border-width: 1px;
-  border-color: #e4ebea;
-  border-radius: 0px;
-  background: #678492;
-}
-
-.product-thumb {
-  background: #e4ebea;
-  position: relative;
-  overflow: hidden;
-  text-align: left;
-}
-
-.product-info {
-  padding: 20px 30px;
-}
-
-.product-image img {
-  width: 100%;
-}
-
-.product-thumb .star-icon {
-  border-top: 1px solid #e4ebea;
-  padding: 4px 20px 0 20px;
-}
-
-.product-thumb .product-icon li a {
-  background: #e4ebea;
-  color: #012B36;
-}
-
-.product-info h3 {
-  margin: 0;
-}
-
-
-/*---------------------------------------
-    CONTACT             
------------------------------------------*/
-
-#contact {
-  background: #012B36;
-}
-
-#contact h2 {
-  color: #e4ebea;
-}
-
-#contact .section-title {
-  padding-bottom: 20px;
-}
-
-#contact h2 > small,
-#contact p,
-#contact a {
-  color: #e4ebea;
-}
-
-#contact-form {
-  padding: 1em 0;
-}
-
-#contact-form .col-md-12,
-#contact-form .col-md-4 {
-  padding-left: 0;
-}
-
-#contact-form .form-control {
-  border: 0;
-  border-radius: 5px;
-  box-shadow: none;
-  margin: 10px 0;
-}
-
-#contact-form input {
-  height: 50px;
-}
-
-#contact-form input[type='submit'] {
-  border-radius: 50px;
-  border: 1px solid transparent;
-}
-
-#contact-form input[type='submit']:hover {
-  background: transparent;
-  border-color: #e4ebea;
-  color: #e4ebea;
-}
-
-
 
 
 /*---------------------------------------
@@ -702,10 +553,6 @@ footer .social-icon {
 @media only screen and (max-width: 580px) {
   h2 {
     font-size: 1.8em;
-  }
-
-  #testimonial .item {
-    padding: 2em;
   }
 
   .contact-image {

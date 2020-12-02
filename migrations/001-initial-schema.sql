@@ -27,15 +27,17 @@ CREATE TABLE IF NOT EXISTS "UserDetails" (
 	PRIMARY KEY("user_id")
 );
 CREATE TABLE IF NOT EXISTS "Reviews" (
-	"review_id"	INTEGER NOT NULL UNIQUE,
-	"user_id"	NUMERIC NOT NULL,
+	"product_id" INTEGER NOT NULL,
+	"review_id"	INTEGER NOT NULL,
+	"reviewer_id"	NUMERIC NOT NULL,
 	"content"	TEXT,
 	"rating"	INTEGER NOT NULL,
-	FOREIGN KEY("user_id") REFERENCES "Users"("user_id"),
+	FOREIGN KEY("reviewer_id") REFERENCES "Users"("user_id"),
 	PRIMARY KEY("review_id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "Products" (
 	"product_id"	INTEGER UNIQUE,
+	"seller_id"	INTEGER NOT NULL,
 	"name"	TEXT NOT NULL UNIQUE,
 	"type"	INTEGER NOT NULL,
 	"description"	TEXT,
@@ -44,6 +46,7 @@ CREATE TABLE IF NOT EXISTS "Products" (
 	"image"	TEXT,
 	"rating"	INTEGER,
 	"review_number"	INTEGER,
+	FOREIGN KEY("seller_id") REFERENCES "Users"("user_id"),
 	PRIMARY KEY("product_id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "Orders" (

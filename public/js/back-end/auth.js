@@ -28,7 +28,7 @@ async function findAccountFromAuth (authToken) {
     if (!token) {
         return null;
     } else {
-        const user = await db.get('SELECT user_id, email, username FROM Users WHERE user_id=?;', [token.user_id]);
+        const user = await db.get('SELECT * FROM Users WHERE user_id=?;', [token.user_id]);
         //const account = { id: user.user_id, email: user.email, username: user.username };
         return user;
     }

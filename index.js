@@ -12,6 +12,7 @@ global.fetch = require('node-fetch');
 
 var storage = require('./public/js/back-end/product-manager.js');
 var account = require('./public/js/back-end/account-manager.js');
+var order = require('./public/js/back-end/order-manager.js');
 var auth = require('./public/js/back-end/auth.js');
 
 // Function for opening database
@@ -51,10 +52,18 @@ app.get('/about', (req, res) => {
     res.render("about", checkStatus(req));
 });
 
-app.get('/store', (req, res) => {
-    var products = storage.load();
-    res.render("store", checkStatus(req, products));
+app.get('/store', async (req, res) => {
+    renderStore(req, res);
 });
+
+app.get('/store-word', async (req, res) => {
+    renderStore(req, res, "AND Products.name='%?%'", [req.body.search]);
+});
+
+app.get('/store-type', async (req, res) => {
+    renderStore(req, res, "AND Products.type=?", [req.body.typeSearch]);
+});
+
 
 app.get('/contact', (req, res) => {
     res.render("contact", checkStatus(req));
@@ -69,16 +78,20 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/login', async (req,res) => {
-    if (!req.user) {
-        res.render("login", { layout: "form" });
+    if (req.user) {
+        redirectToAccount(req, res);
     } else {
-        res.render("account", checkStatus(req));
+        res.render("login", { layout: "form" });
     }
 });
 
-app.get('/product-api', async (req, res) => {
-    var products = await storage.load(req.body.category);
-    res.json(products);
+app.get('/signout', async (req, res) => {
+    res.clearCookie('authToken');
+    return res.redirect('/');
+});
+
+app.get('/add-product', async (req, res) => {
+    res.render("add-product", { layout: "form", operation: "ADD", operationPath:"/add-product" });
 });
 
 /*-----------------------------------------------------------------------------------------------
@@ -90,12 +103,29 @@ app.post('/register', async (req,res) => {
         let errorMessage = await account.addUser(req.body.type, req.body.firstName, req.body.lastName, 
             req.body.username, req.body.email, req.body.password, req.body.confirmPassword);
         if (!errorMessage) {
+            let user = await account.login(req.body.username, req.body.password);
+            const token = await auth.create(user);
+            res.cookie('authToken', token);
             res.redirect("/");
         } else {
             res.render('register', { error: errorMessage, layout: "form" });
         }
     } catch (err) {
         return res.render('register', { error: err, layout: "form" });
+    }
+});
+
+app.post('/add-address', async (req,res) => {
+    try {
+        let errorMessage = await account.addAddress(req.user.user_id, req.body.address, req.body.city,
+            req.body.state, req.body.country, req.body.zip, req.body.password);
+        if (!errorMessage) {
+            redirectToAccount(req, res);
+        } else {
+            redirectToAccount(req, res, errorMessage);
+        }
+    } catch (err) {
+        return res.render('errorPage', { error: "in add-address" });
     }
 });
 
@@ -115,25 +145,55 @@ app.post('/login', async (req,res) => {
     }
 });
 
-//Check Out
-app.post('/checkout', async (req,res) => {
-    await account.addAddress(req.body.username, req.body.address, req.body.city,
-        req.body.state, req.body.country, req.body.postalCode, req.body.pass);
-    res.redirect("/");
+// Add Product
+app.post('/add-product', async (req,res) => {
+    try {
+        let errorMessage = await storage.add(req.body.name, req.user.user_id, req.body.type,
+            req.body.description, req.body.cost, req.body.image);
+        if (!errorMessage) {
+            redirectToAccount(req, res);
+        } else {
+            res.render('add-product', { error: errorMessage, layout: "form" });
+        }
+    } catch (err) {
+        return res.render('errorPage', { error: "in add-product" });
+    }
 });
 
-// Add Products
-app.post("/product-api", async (req, res) => {
-    const product = req.body;
-    res.json({
-        name: product.name,
-        type: product.type,
-        description: product.desc,
-        cost: product.cost
-    });
-    await storage.addToStore(product.name, product.type, product.desc, product.cost);
-    res.redirect("/");
+// Edit Product
+app.post('/update-product', async (req,res) => {
+    try {
+        await storage.update(req.body.id, req.body.type, req.body.newContent);
+        redirectToAccount(req, res);
+    } catch (err) {
+        return res.render('errorPage', { error: "in update-product" });
+    }
 });
+
+// TODO Delete Product
+app.post('/delete-product', async (req,res) => {
+    try {
+        await storage.delete(req.body.id);
+        redirectToAccount(req, res);
+    } catch (err) {
+        return res.render('errorPage', { error: "in delete-product" });
+    }
+});
+
+//Check Out
+app.post('/add-to-cart', async (req,res) => {
+    try {
+        await storage.delete(req.body.id);
+        redirectToAccount(req, res);
+    } catch (err) {
+        return res.render('errorPage', { error: "in delete-product" });
+    }
+});
+
+
+/*-----------------------------------------------------------------------------------
+    ERROR HANDLERS & SETUP
+-------------------------------------------------------------------------------------*/
 
 // 404 error handler
 app.use((req, res, next) => {
@@ -177,12 +237,44 @@ setup();
     });
  }
 
- /* A function to look for the account status */
- function checkStatus(req, addition=null) {
+ /* A function to look for the account status when there is no other parameter*/
+ function checkStatus(req) {
     if (req.user) {
-        return { status: "Hi " + req.user.username, user: req.user.username, addition };
+        return { status: "Hi " + req.user.username, user: req.user.username };
     } else {
-        return { status: "Sign In", user: null, addition };
+        return { status: "Sign In", user: null };
     }
 
  }
+
+/* A function to redirect users to their account page */
+async function redirectToAccount(req, res, errorMessage=null) {
+    var db = await dbPromise;
+    const userDetails = await db.get('SELECT * FROM UserDetails WHERE user_id=?;', [req.user.user_id]);
+    if (req.user.account_type == "seller") {
+        const products = await storage.load("AND Products.seller_id=?", [req.user.user_id]);
+        res.render("seller-account", { status: "Hi " + req.user.username, user: req.user, details: userDetails, 
+            products, error: errorMessage });
+    } else if (req.user.account_type == "buyer") {
+        const orderList = await db.get('SELECT * FROM Orders WHERE user_id=?;', [req.user.user_id]);
+        if (orderList) {
+            console.log(userDetails);
+            const details = await db.get('SELECT * FROM OrderDetails WHERE user_id=?;', [orders.order_id]);
+            res.render("buyer-account", { status: "Hi " + req.user.username, user: req.user, error: errorMessage, 
+                details: userDetails, orders: orderList, orderDetails: details });
+        } else {
+            res.render("buyer-account", { status: "Hi " + req.user.username, user: req.user, error: errorMessage,
+                details: userDetails });
+        }
+    }
+}
+
+/* A function to render store front based on filters */
+async function renderStore(req, res, constraint=null, param=null) {
+    const products = await storage.load(constraint, param);
+    if (req.user) {
+        res.render('store', { status: "Hi " + req.user.username, user: req.user.username, products });
+    } else {
+        res.render('store', { status: "Sign In", user: null, products });
+    }
+}

@@ -3,26 +3,35 @@
 
 <div class="container">
     <h1>Store</h1>
-    <input type="text" class="col-xs-11" id="search-bar" placeholder="Search product by keywords...">
-    <button class="btn btn-secondary col-xs-1" onclick="displayProducts()"><i class="fa fa-search"></i></button>
+    <form action="/store-word" method="GET">
+        <input type="text" class="col-xs-11" id="search-bar" placeholder="Search product by keywords..." name="search">
+        <button class="btn btn-secondary col-xs-1" type="submit"><i class="fa fa-search"></i></button>
+    </form>
 </div>
 
 <div class="container">
     <div class="submenu">
-        <button class="submenu-button col-xs-2" onclick="displayProducts('All')">All</button>
-        <button class="submenu-button col-xs-2" onclick="displayProducts('Mask')">Mask</button>
-        <button class="submenu-button col-xs-2" onclick="displayProducts('PPE')">PPE</button>
-        <button class="submenu-button col-xs-2" onclick="displayProducts('Essentials')">Essentials</button>
-        <button class="submenu-button col-xs-2" onclick="displayProducts('Pharm')">Pharmaceutical</button>
-        <button class="submenu-button col-xs-2" onclick="displayProducts('Other')">Other</button>
+        <form action="/store-type" method="GET">
+            <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="">All</button>
+            <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="Mask">Mask</button>
+            <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="PPE">PPE</button>
+            <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="Essentials">Essentials</button>
+            <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="Pharmaceutical">Pharmaceutical</button>
+            <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="Other">Other</button>
+        </form> <br><br>
     </div>
 
     <div class="row store-content">
-        <div id="filter-menu">{{ menu }}</div>
         <ul id="product-list">
             <!-- Section for displaying messages -->
             {{#each products}}
-            <li>{{this.name}}</li>
+            <li class="store-list col-sm-2 col-xs-3">
+                <img src="assets/imgs/store/{{this.image}}" alt={{this.name}} width="100%" height="150px"> 
+                <p>{{this.name}}</p>
+                <p>Seller: {{this.seller}}</p>
+                <p>Price: ${{this.cost}}</p>
+                <button action="/add-to-cart" method="POST">Add to Cart</button>
+            </li>
             {{/each}}
         </ul>
     </div>
