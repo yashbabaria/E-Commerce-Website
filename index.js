@@ -61,15 +61,15 @@ app.get('/contact', (req, res) => {
 });
 
 app.get('/cart', async (req, res) => {
-    const orderDetails = await order.cart(req.user.user_id);
-    const subTotal = await order.current(req.user.user_id);
-    const miscTotal = subTotal.total * 0.1;
-    const totalFee = subTotal.total + miscTotal;
     if (req.user) {
+        const orderDetails = await order.cart(req.user.user_id);
+        const subTotal = await order.current(req.user.user_id);
+        const miscTotal = subTotal.total * 0.1;
+        const totalFee = subTotal.total + miscTotal;
         res.render('cart', { status: "Hi " + req.user.username, user: req.user.username, 
             orders: orderDetails, info: subTotal, miscFee: miscTotal, total: totalFee });
     } else {
-        res.render('login');
+        res.render('login', { layout: "form" });
     }
 });
 
@@ -183,7 +183,7 @@ app.post('/add-to-cart', async (req,res) => {
             res.render('cart', { status: "Hi " + req.user.username, user: req.user.username, 
                 orders: orderDetails, info: subTotal, miscFee: miscTotal, total: totalFee });
         } else {
-            res.render('login');
+            res.render('login', { layout: "form" });
         }
     } catch (err) {
         return res.render('errorPage', { error: "in delete-product" });
