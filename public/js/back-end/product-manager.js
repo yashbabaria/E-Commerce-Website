@@ -118,7 +118,7 @@ async function loadProducts(constraint=null, param=null) {
     if (constraint && param) {
         sql += constraint;
         sql +=" ORDER BY Products.name";
-        products = await db.all(sql, param);
+        products = await db.all(sql, [param]);
     } else {
         sql +=" ORDER BY Products.name";
         products = await db.all(sql);

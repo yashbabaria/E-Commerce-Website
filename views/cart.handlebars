@@ -3,7 +3,6 @@
             
         <h2>Shopping Cart</h2>
     
-        <form action="/update-cart" method="POST">
             <div class="cart-info">
                 <table>
                     <thead>
@@ -22,23 +21,23 @@
                     <tbody>
                         {{#each orders}}
                         <tr>
-                        <td class="remove"><input type="checkbox" name="remove" /></td>
-                        <td class="image"><img src="assets/imgs/store/{{this.image}}" alt={{this.name}} title={{this.name}} width=50px height=50px;/></a>
-                        </td>
+                            <td class="remove"><form action="/delete-from-cart" method="POST"><button name="id" value="{{this.product_id}}" class="cross-btn"><i class="fa fa-times"></i></button></form></td>
+                            <td class="image"><img src="assets/imgs/store/{{this.image}}" alt={{this.name}} title={{this.name}} width=50px height=50px;/></a>
+                            </td>
 
-                        <td class="name"><a href="#">{{this.name}}</a>
-                        </td>
-                        <td class="model">{{this.type}}</td>
-                        <td class="quantity"><input type="text" name="quantity" size="3" value={{this.quantity}}></td>
+                            <td class="name"><a href="#">{{this.name}}</a>
+                            </td>
+                            <td class="model">{{this.type}}</td>
+                            <td class="quantity"><input type="text" name="quantity" size="3" value={{this.quantity}}></td>
 
-                        <td class="price">${{this.cost}}</td>
-                        <td class="total">{{price}}</td>
+                            <td class="price">${{this.cost}}</td>
+                            <td class="total">${{this.subtotal}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
                 </table>
             </div>
-        </form>
+        <form action="/checkout" method="POST">
         <div class="cart-module">
             <div>
                 <div class="cart-heading">Shipping Address</div>
@@ -46,88 +45,92 @@
                     <p>Enter the location of where you want to ship your order to.</p>
                     <table id="shipping">
                         <tr>
-                            <td><span class="required">*</span> State</td>
-                            <td><input type="text" name="state" value="" /></td>
+                            <td>Address: </td>
+                            <td><input type="text" name="address" placeholder="Address..."/></td>
                         </tr>
                         <tr>
-                            <td><span class="required">*</span> Country</td>
-                            <td><input type="text" name="country" value="" /></td>
+                            <td>City: </td>
+                            <td><input type="text" name="city" placeholder="City..."/></td>
                         </tr>
                         <tr>
-                            <td><span class="required">*</span> Post Code:</td>
-                            <td><input type="text" name="postcode" value="" /></td>
+                            <td>State:</td>
+                            <td><input type="text" name="state" placeholder="State..."/></td>
+                        </tr>
+                        <tr>
+                            <td>Country:</td>
+                            <td><input type="text" name="country" placeholder="Country..."/></td>
+                        </tr>
+                        <tr>
+                            <td>ZIP/Post Code: </td>
+                            <td><input type="text" name="postcode" placeholder="ZIP/Postal cod..."/></td>
                         </tr>
 
                     </table>
-                    <a id="button-quote" class="button"><span>Save Address</span></a>
-                    <div id="quote" style="display: none;"></div>
-                    <input type="hidden" name="shipping_method" value="" />
                 </div>
         </div>
 
         <div>
             <div class="cart-heading">Gift or Discount Voucher</div>
             <div class="cart-content" id="coupon">Enter your coupon code here:&nbsp;
-            <input type="text" name="coupon" value="" />
+            <input type="text" name="coupon"/>
             &nbsp;<a id="button-coupon" class="button"><span>Apply Coupon</span></a></div>
         </div>
         <div>
             <div class="cart-heading">Payment Details</div>
-            <div class="cart-content" id="payment">
-                <h3>Payment</h3>
-                <label for="fname">Accepted Cards</label>
-                <div class="icon-container">
-                <i class="fa fa-cc-visa" style="color:navy;"></i>
-                <i class="fa fa-cc-amex" style="color:blue;"></i>
-                <i class="fa fa-cc-mastercard" style="color:red;"></i>
-                <i class="fa fa-cc-discover" style="color:orange;"></i>
-                </div>
-                <form>
-                    <label for="cname">Name on Card</label>
-                    <input type="text" id="cname" name="cardname" placeholder="Name...">
-                    <label for="ccnum">Credit card number</label>
-                    <input type="text" id="ccnum" name="cardnumber" placeholder="Card Number...">
-                    <label for="expmonth">Exp Month</label>
-                    <input type="text" id="expmonth" name="expmonth" placeholder="Month...">
-                    <div class="row">
-                        <div class="col-50">
-                            <label for="expyear">Exp Year</label>
-                            <input type="text" id="expyear" name="expyear" placeholder="Year...">
-                        </div>
-                        <div class="col-50">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" name="cvv" placeholder="CVV...">
-                        </div>
-                    </div>
-                </form>  
+                <div class="cart-content">
+                    <p>Enter your credit or debit card.</p>
+                    <table id="shipping">
+                        <tr><td>Accepted Cards</td></tr>
+                        <tr><td>
+                            <i class="fa fa-cc-visa" style="color:navy;"></i>
+                            <i class="fa fa-cc-amex" style="color:blue;"></i>
+                            <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                            <i class="fa fa-cc-discover" style="color:orange;"></i>
+                        </td></tr>
+                        <tr>
+                            <td>Name on Card: </td>
+                            <td><input type="text" name="cardName" placeholder="Name on your card..."/></td>
+                        </tr>
+                        <tr>
+                            <td>Credit Card Number: </td>
+                            <td><input type="number" name="number" placeholder="Card Number..."/></td>
+                        </tr>
+                        <tr>
+                            <td>Expired Date: </td>
+                            <td><input type="text" name="date" placeholder="mm/yy"/></td>
+                        </tr>
+                        <tr>
+                            <td>CVV: </td>
+                            <td><input type="number" name="cvv" placeholder="Three digits CVV..."/></td>
+                        </tr>
+
+                    </table>
+                    <button class="mini-submit-btn" type="submit">Checkout</button>
+                </div> 
             </div>  
         </div>
-    </div>
-    <div class="cart-total">
-        <table>
-        <tr>
+        <div class="cart-total">
+            <table>
+            <tr>
 
-            <td colspan="5"></td>
-            <td class="right"><b>Sub-Total:</b></td>
-            <td class="right total">{{calculate-subtotal}}</td>
-        </tr>
-        <tr>
-            <td colspan="5"></td>
-            <td class="right"><b>Tax + Shipping:</b></td>
+                <td colspan="5"></td>
+                <td class="right"><b>Sub-Total:</b></td>
+                <td class="right total">${{info.total}}</td>
+            </tr>
+            <tr>
+                <td colspan="5"></td>
+                <td class="right"><b>Tax(10%):</b></td>
 
-            <td class="right  total">{{calculate-misc}}</td>
-        </tr>
-        <tr>
-            <td colspan="5"></td>
-            <td class="right"><b>Total:</b></td>
-            <td class="right  total">{{calculate-total}}</td>
-        </tr>
+                <td class="right total">${{miscFee}}</td>
+            </tr>
+            <tr>
+                <td colspan="5"></td>
+                <td class="right"><b>Total:</b></td>
+                <td class="right  total">${{total}}</td>
+            </tr>
+            </table>
+        </div>
+    </div>
 
-        </table>
-    </div>
-    <div class="buttons">
-        <div class="left"><a onclick="$('#basket').submit();" class="button larger"><span>Update</span></a></div>
-        <div class="right"><a href='/checkout'><span>Checkout</span></a></div>
-        <div class="center"><a href='/store'><span>Continue Shopping</span></a></div>
-    </div>
+    </form>
 </div><!-- << page content >> -->

@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS "OrderDetails" (
 	"order_id"	INTEGER NOT NULL,
 	"product_id" INTEGER NOT NULL,
 	"quantity"	INTEGER NOT NULL,
+	"subtotal" INTEGER,
 	FOREIGN KEY("product_id") REFERENCES "Products"("product_id"),
 	FOREIGN KEY("order_id") REFERENCES "Orders"("order_id")
 );
@@ -62,6 +63,7 @@ CREATE TABLE IF NOT EXISTS "Orders" (
 	"shipping_address"	TEXT NOT NULL,
 	"order_date"	TEXT NOT NULL,
 	"status"	TEXT NOT NULL,
+	"total" INTEGER,
 	FOREIGN KEY("user_id") REFERENCES "Users"("user_id"),
 	PRIMARY KEY("order_id")
 );

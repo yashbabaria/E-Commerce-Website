@@ -55,45 +55,17 @@
                             <div class="account-body">
                                 <ul class="acnt-list">
                                     {{#each products}}
-                                    <li class="seller-products" data-id="{{this.product_id}}">
-                                        <img src="assets/imgs/store/{{this.image}}" alt={{this.name}} width="50px" height="50px"> 
-                                        <p>Name: <span class="information-field">{{this.name}}</span></p>
-                                        <p>Type: <span class="information-field"></span>{{this.type}}</span></p>
-                                        <p>Description: <span class="information-field"></span>{{this.description}}</span></p>
-                                        <p>Price: <span class="information-field"></span>{{this.cost}}</span></p>
-                                        <p>Rating: <span class="information-field"></span>{{this.rating}} stars {{this.review_number}} reviews </span></p>
-                                        <p>Approval Status: <span class="information-field"></span>{{this.status}}</span></p>
-                                        {{#if edit}}
-                                            {{#if update}}
-                                                <form action="/update-product" method="POST">
-                                                    <h5>Which information do you want to change? </h4>
-                                                    {{#if error}}
-                                                    <div id="error-message">
-                                                        {{error}}
-                                                    </div>
-                                                    {{/if}} <br>
-                                                    <label>New Information:</label>
-                                                    <input type="text" class="input-field" name="newContent"/> <br>
-                                                    <label> Information Type: </label>
-                                                    <select class="input-field" name="type" style="width: 100%">
-                                                        <option value="name">Other</option>
-                                                        <option value="type">Mask</option>
-                                                        <option value="description">PPE</option>
-                                                        <option value="cost">Essential</option>
-                                                        <option value="image">Pharm</option>
-                                                    </select> <br><br>                       
-                                                    <button type="submit" class="mini-submit-btn" data-id="{{this.product_id}}">Update Product</button>
-                                                </form>
-                                                <button action="/login" method="GET" class="mini-submit-btn">Cancel</a>
-                                                {{else}}
-                                                    <label> Are you sure you want to delete this product from your store? </label><br>
-                                                    <button action="/login" method="GET" class="mini-submit-btn">Cancel</a>
-                                                    <button action="/delete-product" method="POST" class="mini-submit-btn" data-id="{{this.product_id}}">Delete</a>
-                                            {{/if}}
-                                            {{else}}
-                                            <a href="/update-product" class="mini-submit-btn">Update</button>
-                                            <a href="/delete-product" class="mini-submit-btn">Delete</button>
-                                        {{/if}}
+                                    <li class="account-items">
+                                        <img src="assets/imgs/store/{{this.image}}" alt={{this.name}} class="item-img"> 
+                                        <div class="item-info">
+                                            <spanp>Name: {{this.name}}</span><br>
+                                            <span>Type: {{this.type}}</span><br>
+                                            <span>Description: {{this.description}}</span><br>
+                                            <span>Price: ${{this.cost}}</span><br>
+                                            <span>Rating: {{this.rating}} stars {{this.review_number}} reviews </span><br>
+                                            <span>Approval Status: {{this.status}}</span><br>
+                                            <form action="/delete-product" method="POST"><button class="mini-submit-btn" name="id" value="{{this.product_id}}">Delete</a></form>
+                                        </div>
                                     </li>
                                     {{/each}}
                                 </ul>

@@ -17,11 +17,15 @@ const dbPromise = require('../../../index');
  /* TODO -- A function to add a new product to the cart */
 async function addProductToCart(userId, productId) {
     await openDatabase();
-    console.log("Add to cart: {" + productId + "}");
     try {
-        var currentOrderId = await checkOrder(userId);
-        await db.run(`INSERT INTO OrderDetails(order_id, product_id, quantity) VALUES (?,?,?)`,
-            currentOrderId, productId, 1);
+        var currentOrder = await checkOrder(userId);
+        const productPrice = await db.get('SELECT cost FROM Products WHERE product_id=?', [productId]);
+        await db.run(`INSERT INTO OrderDetails(order_id, product_id, quantity, subtotal) VALUES (?,?,?,?)`,
+            [currentOrder.order_id, productId, 1, productPrice.cost]);
+        const currentTotal = await db.get('SELECT total FROM Orders WHERE order_id=?', [currentOrder.order_id]);
+        let newTotal = currentTotal.total + productPrice.cost;
+        await db.run(`UPDATE Orders SET total=? WHERE order_id=?`, [newTotal, currentOrder.order_id]);
+        console.log("Add to cart: {" + productId + "}");
     } catch(err) {
        console.log("Error in adding to cart: " + err);
     }
@@ -31,10 +35,10 @@ async function addProductToCart(userId, productId) {
  async function checkExistingOrder(userId) {
     await openDatabase();
     try {
-        const currentOrder = checkOrder(userId);
-        const orderDetails = await db.all(`SELECT Products.type, Products.name, Products.cost, Products.image, 
-            OrderDetails.quantity as quantity FROM OrderDetails LEFT JOIN Products 
-            WHERE Products.product_id=OrderDetails.product_id`, [currentOrder.order_id]);
+        const currentOrderId = await checkOrder(userId);
+        const orderDetails = await db.all(`SELECT Products.product_id, Products.type, Products.name, Products.cost, Products.image, 
+            OrderDetails.subtotal, OrderDetails.quantity as quantity FROM OrderDetails LEFT JOIN Products 
+            WHERE Products.product_id=OrderDetails.product_id AND OrderDetails.order_id=?`, [currentOrderId.order_id]);
         return orderDetails;
     } catch(err) {
        console.log("Error in creating a new order: " + err);
@@ -42,31 +46,25 @@ async function addProductToCart(userId, productId) {
 }
 
  /* A function to delete a product from the cart */
- async function deleteProductFromCart(id) {
+ async function deleteProductFromCart(userId, productId) {
     await openDatabase();
-    db.serialize(() => {
-        let sql = "DELETE FROM OrderDetails WHERE product_id=?";
-        db.run(sql, [id], (err) => {
-            if (err) throw err;
-            console.log(name + " is deleted.");
-        });
-      });
-    
+    const orderId = await db.get('SELECT order_id FROM Orders WHERE status="New" AND user_id=?', [userId]);
+    const priceDeducted = await db.get('SELECT subtotal FROM OrderDetails WHERE product_id=? AND order_id=?', [productId, orderId.order_id]);
+    const currentTotal = await db.get('SELECT total FROM Orders WHERE order_id=?', [orderId.order_id]);
+    const newTotal = currentTotal.total - priceDeducted.subtotal;
+    await db.run('UPDATE Orders SET total=? WHERE order_id=?', [newTotal, orderId.order_id]);
+    await db.run("DELETE FROM OrderDetails WHERE product_id=? AND order_id=?", [productId, orderId.order_id]);
 }
-
-/* TODO -- Process order */
-
-/* TODO -- Cancel order */
 
 async function checkOrder(userId) {
     try {
-        let currentOrder = await db.get(`SELECT Orders.order_id FROM Orders WHERE Orders.user_id=? AND status='New'`, [userId]);
+        let currentOrder = await db.get(`SELECT order_id, total FROM Orders WHERE status="New" AND Orders.user_id=?`, [userId]);
         if (!currentOrder) {
-            await db.run(`INSERT INTO Orders(user_id, shipping_address, order_date, status) VALUES (?,?,?,?)`,
-                userId, "", "", "New");
+            await db.run(`INSERT INTO Orders(user_id, shipping_address, order_date, status, total) VALUES (?,?,?,?,?)`,
+                userId, "", "", "New", 0);
             currentOrder = await db.get(`SELECT Orders.order_id FROM Orders WHERE Orders.user_id=? AND status='New'`, [userId]);
         }
-        return currentOrder.order_id;
+        return currentOrder;
     } catch (err) {
         console.log("Error in checking order: " + err);
     }
@@ -74,5 +72,7 @@ async function checkOrder(userId) {
 
 module.exports = {
     add: addProductToCart,
-    current: checkExistingOrder
+    cart: checkExistingOrder,
+    current: checkOrder,
+    delete: deleteProductFromCart
 }

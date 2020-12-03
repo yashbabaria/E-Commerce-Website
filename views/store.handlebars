@@ -3,16 +3,16 @@
 
 <div class="container">
     <h1>Store</h1>
-    <form action="/store-word" method="GET">
-        <input type="text" class="col-xs-11" id="search-bar" placeholder="Search product by keywords..." name="search">
+    <form action="/store-word" method="POST">
+        <input type="text" class="col-xs-11" id="search-bar" placeholder="Search product by name..." name="search">
         <button class="btn btn-secondary col-xs-1" type="submit"><i class="fa fa-search"></i></button>
     </form>
 </div>
 
 <div class="container">
     <div class="submenu">
-        <form action="/store-type" method="GET">
-            <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="">All</button>
+        <form action="/store-type" method="POST">
+            <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="All">All</button>
             <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="Mask">Mask</button>
             <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="PPE">PPE</button>
             <button class="submenu-button col-xs-2" type="submit" name="typeSearch" value="Essentials">Essentials</button>

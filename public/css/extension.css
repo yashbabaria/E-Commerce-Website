@@ -161,7 +161,6 @@
   text-align: left;
   text-align: center;
   border: 1px solid black;
-  border-radius: 10px;
   padding: 10px;
   margin: 10px;
 }
@@ -225,16 +224,8 @@
     ACCOUNT           
 -----------------------------------------*/
 .account-body {
-  padding-left: 35px;
-  padding-top: 20px;
-}
-
-.acnt-list li {
-  padding: 5px 0;
-}
-
-.acnt-list li i {
-  margin-right: 5px;
+  padding-left: 5px;
+  padding-top: 5px;
 }
 
 .accordion-panel {
@@ -263,23 +254,23 @@
   border-width: 1px;
 }
 
-.order-details {
-  border: 1px solid black;
-  position: relative;
+.account-items {
+  border-top: 1px solid black;
+  width: 90%;
   overflow: hidden;
   text-align: left;
   padding: 10px;
   margin: 10px;
 }
 
-.seller-products {
-  border: 1px solid black;
-  border-radius: 10px;
-  position: relative;
-  overflow: hidden;
-  text-align: left;
-  padding: 50px;
-  margin: 10px;
+.item-img{
+  width: 100px;
+  height: 150px;
+  float: left;
+}
+
+.item-info {
+  margin-left: 130px;
 }
 
 #error-message {
@@ -291,25 +282,9 @@
 /*---------------------------------------
     CART           
 -----------------------------------------*/
-#content-login .content 
-{
-	padding: 10px;
-	overflow: auto;
-	margin-bottom: 20px;
-}
 
-#content-login .content .left 
-{
-	float: left;
-	width: 49%;
-	line-height:20px;
-}
-
-#content-login .content .right 
-{
-	float: right;
-	width: 49%;
-	line-height:20px;
+td {
+  padding: 5px;
 }
 
 .cart-info tbody .remove 
@@ -394,4 +369,43 @@
 .cart-total td {
   padding: 5px 5px 10px 50px;
   text-align: right;
+}
+
+.cross-btn {
+  width: 30px;
+  height: 30px;
+  font-size: 15pt;
+  color: black;
+  border: none;
+  background-color: transparent;
+}
+
+.cross-btn:hover {
+  width: 30px;
+  height: 30px;
+  font-size: 15pt;
+  color: #FED79D;
+  border: none;
+  background-color: transparent;
+}
+
+#content-login .content 
+{
+	padding: 10px;
+	overflow: auto;
+	margin-bottom: 20px;
+}
+
+#content-login .content .left 
+{
+	float: left;
+	width: 49%;
+	line-height:20px;
+}
+
+#content-login .content .right 
+{
+	float: right;
+	width: 49%;
+	line-height:20px;
 }

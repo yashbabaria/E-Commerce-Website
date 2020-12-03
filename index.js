@@ -56,24 +56,18 @@ app.get('/store', async (req, res) => {
     renderStore(req, res);
 });
 
-app.get('/store-word', async (req, res) => {
-    console.log(req.body.search);
-    renderStore(req, res, "AND Products.name='%?%'", [req.body.search]);
-});
-
-app.get('/store-type', async (req, res) => {
-    renderStore(req, res, "AND Products.type=?", [req.body.typeSearch]);
-});
-
-
 app.get('/contact', (req, res) => {
     res.render("contact", checkStatus(req));
 });
 
 app.get('/cart', async (req, res) => {
-    const orderDetails = await order.current(req.user.user_id);
+    const orderDetails = await order.cart(req.user.user_id);
+    const subTotal = await order.current(req.user.user_id);
+    const miscTotal = subTotal.total * 0.1;
+    const totalFee = subTotal.total + miscTotal;
     if (req.user) {
-        res.render('cart', { status: "Hi " + req.user.username, user: req.user.username, orders: orderDetails });
+        res.render('cart', { status: "Hi " + req.user.username, user: req.user.username, 
+            orders: orderDetails, info: subTotal, miscFee: miscTotal, total: totalFee });
     } else {
         res.render('login');
     }
@@ -166,21 +160,11 @@ app.post('/add-product', async (req,res) => {
     }
 });
 
-// Edit Product
-app.post('/update-product', async (req,res) => {
-    try {
-        await storage.update(req.body.id, req.body.type, req.body.newContent);
-        redirectToAccount(req, res);
-    } catch (err) {
-        return res.render('errorPage', { error: "in update-product" });
-    }
-});
-
 // Delete Product
 app.post('/delete-product', async (req,res) => {
-    console.log("TEST: " + products.product_id);
     try {
-        await storage.delete(req.user.user_id, req.body.id);
+        await storage.delete(req.body.id);
+        console.log("Deleted: " + req.body.id);
         redirectToAccount(req, res);
     } catch (err) {
         return res.render('errorPage', { error: "in delete-product" });
@@ -192,13 +176,53 @@ app.post('/add-to-cart', async (req,res) => {
     try {
         if (req.user) {
             await order.add(req.user.user_id, req.body.id);
-            const orderDetails = await order.current(req.user.user_id);
-            res.render('cart', { status: "Hi " + req.user.username, user: req.user.username, orders: orderDetails });
+            const subTotal = await order.current(req.user.user_id);
+            const miscTotal = subTotal.total * 0.1;
+            const totalFee = subTotal.total + miscTotal;
+            const orderDetails = await order.cart(req.user.user_id);
+            res.render('cart', { status: "Hi " + req.user.username, user: req.user.username, 
+                orders: orderDetails, info: subTotal, miscFee: miscTotal, total: totalFee });
         } else {
             res.render('login');
         }
     } catch (err) {
         return res.render('errorPage', { error: "in delete-product" });
+    }
+});
+
+// Delete items from cart
+app.post('/delete-from-cart', async (req,res) => {
+    try {
+        await order.delete(req.user.user_id, req.body.id);
+        const orderDetails = await order.cart(req.user.user_id);
+        const subTotal = await order.current(req.user.user_id);
+        const miscTotal = subTotal.total * 0.1;
+        const totalFee = subTotal.total + miscTotal;
+        res.render('cart', { status: "Hi " + req.user.username, user: req.user.username, 
+            orders: orderDetails, info: subTotal, miscFee: miscTotal, total: totalFee });
+    } catch (err) {
+        return res.render('errorPage', { error: "in delete-product" });
+    }
+});
+
+app.post('/store-word', async (req, res) => {
+    renderStore(req, res, "AND Products.name LIKE ?", [req.body.search]);
+});
+
+app.post('/store-type', async (req, res) => {
+    if (req.body.typeSearch != "All") {
+        renderStore(req, res, "AND Products.type=?", [req.body.typeSearch]);
+    } else {
+        renderStore(req, res);
+    }
+});
+
+//Checkout Order
+app.post('/checkout', async (req,res) => {
+    try {
+        res.redirect('/');
+    } catch (err) {
+        return res.render('errorPage', { error: "in checkout order" });
     }
 });
 
@@ -293,6 +317,7 @@ async function renderStore(req, res, constraint=null, param=null) {
 // For testing
 // async function test() {
 //     var db = await dbPromise;
-//     db.run('DELETE FROM OrderDetails WHERE order_id=1;');
+//     //db.run('INSERT INTO Users VALUES ("2","Test","Test","Test","test@gmail.com","$2b$10$.1pGb3wIB9BbBLACYAOVL.SaSfvSjHkm3HNNj.v3DNpdZzew1hOOa","seller");');
+//     //db.run('DELETE FROM OrderDetails;');
 // }
 // test();
