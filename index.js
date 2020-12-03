@@ -57,6 +57,7 @@ app.get('/store', async (req, res) => {
 });
 
 app.get('/store-word', async (req, res) => {
+    console.log(req.body.search);
     renderStore(req, res, "AND Products.name='%?%'", [req.body.search]);
 });
 
@@ -69,8 +70,13 @@ app.get('/contact', (req, res) => {
     res.render("contact", checkStatus(req));
 });
 
-app.get('/cart', (req, res) => {
-    res.render("cart", checkStatus(req));
+app.get('/cart', async (req, res) => {
+    const orderDetails = await order.current(req.user.user_id);
+    if (req.user) {
+        res.render('cart', { status: "Hi " + req.user.username, user: req.user.username, orders: orderDetails });
+    } else {
+        res.render('login');
+    }
 });
 
 app.get('/register', (req, res) => {
@@ -170,21 +176,27 @@ app.post('/update-product', async (req,res) => {
     }
 });
 
-// TODO Delete Product
+// Delete Product
 app.post('/delete-product', async (req,res) => {
+    console.log("TEST: " + products.product_id);
     try {
-        await storage.delete(req.body.id);
+        await storage.delete(req.user.user_id, req.body.id);
         redirectToAccount(req, res);
     } catch (err) {
         return res.render('errorPage', { error: "in delete-product" });
     }
 });
 
-//Check Out
+//Add product to cart
 app.post('/add-to-cart', async (req,res) => {
     try {
-        await storage.delete(req.body.id);
-        redirectToAccount(req, res);
+        if (req.user) {
+            await order.add(req.user.user_id, req.body.id);
+            const orderDetails = await order.current(req.user.user_id);
+            res.render('cart', { status: "Hi " + req.user.username, user: req.user.username, orders: orderDetails });
+        } else {
+            res.render('login');
+        }
     } catch (err) {
         return res.render('errorPage', { error: "in delete-product" });
     }
@@ -238,13 +250,12 @@ setup();
  }
 
  /* A function to look for the account status when there is no other parameter*/
- function checkStatus(req) {
+ function checkStatus(req, addition=null) {
     if (req.user) {
-        return { status: "Hi " + req.user.username, user: req.user.username };
+        return { status: "Hi " + req.user.username, user: req.user.username, addition };
     } else {
-        return { status: "Sign In", user: null };
+        return { status: "Sign In", user: null, addition };
     }
-
  }
 
 /* A function to redirect users to their account page */
@@ -278,3 +289,10 @@ async function renderStore(req, res, constraint=null, param=null) {
         res.render('store', { status: "Sign In", user: null, products });
     }
 }
+
+// For testing
+// async function test() {
+//     var db = await dbPromise;
+//     db.run('DELETE FROM OrderDetails WHERE order_id=1;');
+// }
+// test();

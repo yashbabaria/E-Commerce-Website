@@ -30,7 +30,7 @@
                 <p>{{this.name}}</p>
                 <p>Seller: {{this.seller}}</p>
                 <p>Price: ${{this.cost}}</p>
-                <button action="/add-to-cart" method="POST">Add to Cart</button>
+                <form action="/add-to-cart" method="POST"><button name="id" value="{{this.product_id}}">Add to Cart</button></form>
             </li>
             {{/each}}
         </ul>

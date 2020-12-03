@@ -55,14 +55,14 @@
                             <div class="account-body">
                                 <ul class="acnt-list">
                                     {{#each products}}
-                                    <li class="seller-products">
+                                    <li class="seller-products" data-id="{{this.product_id}}">
                                         <img src="assets/imgs/store/{{this.image}}" alt={{this.name}} width="50px" height="50px"> 
-                                        <p>Name: {{this.name}}</p>
-                                        <p>Type: {{this.type}}</p>
-                                        <p>Description: {{this.description}}</p>
-                                        <p>Price: {{this.cost}}</p>
-                                        <p>Rating: {{this.rating}} stars {{this.review_number}} reviews </p>
-                                        <p>Approval Status: {{this.status}}</p>
+                                        <p>Name: <span class="information-field">{{this.name}}</span></p>
+                                        <p>Type: <span class="information-field"></span>{{this.type}}</span></p>
+                                        <p>Description: <span class="information-field"></span>{{this.description}}</span></p>
+                                        <p>Price: <span class="information-field"></span>{{this.cost}}</span></p>
+                                        <p>Rating: <span class="information-field"></span>{{this.rating}} stars {{this.review_number}} reviews </span></p>
+                                        <p>Approval Status: <span class="information-field"></span>{{this.status}}</span></p>
                                         {{#if edit}}
                                             {{#if update}}
                                                 <form action="/update-product" method="POST">
@@ -82,17 +82,17 @@
                                                         <option value="cost">Essential</option>
                                                         <option value="image">Pharm</option>
                                                     </select> <br><br>                       
-                                                    <button type="submit" class="mini-submit-btn">Update Product</button>
+                                                    <button type="submit" class="mini-submit-btn" data-id="{{this.product_id}}">Update Product</button>
                                                 </form>
                                                 <button action="/login" method="GET" class="mini-submit-btn">Cancel</a>
                                                 {{else}}
                                                     <label> Are you sure you want to delete this product from your store? </label><br>
                                                     <button action="/login" method="GET" class="mini-submit-btn">Cancel</a>
-                                                    <button action="/delete-product" method="POST" class="mini-submit-btn">Delete</a>
+                                                    <button action="/delete-product" method="POST" class="mini-submit-btn" data-id="{{this.product_id}}">Delete</a>
                                             {{/if}}
                                             {{else}}
-                                            <button action="/update-product" method="GET" class="mini-submit-btn">Update</button>
-                                            <button action="/delete-product" method="GET" class="mini-submit-btn">Delete</button>
+                                            <a href="/update-product" class="mini-submit-btn">Update</button>
+                                            <a href="/delete-product" class="mini-submit-btn">Delete</button>
                                         {{/if}}
                                     </li>
                                     {{/each}}

@@ -12,7 +12,7 @@
                         <td class="remove">Remove</td>
                         <td class="image">Image</td>
                         <td class="name">Product Name</td>
-                        <td class="seller">Seller</td>
+                        <td class="model">Type</td>
                         <td class="quantity">Quantity</td>
                         <td class="price">Unit Price</td>
 
@@ -20,19 +20,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                        {{#each items}}
+                        {{#each orders}}
                         <tr>
                         <td class="remove"><input type="checkbox" name="remove" /></td>
-                        <td class="image"><img src={{this.image}} alt={{this.name}} title={{this.name}} /></a>
+                        <td class="image"><img src="assets/imgs/store/{{this.image}}" alt={{this.name}} title={{this.name}} width=50px height=50px;/></a>
                         </td>
 
                         <td class="name"><a href="#">{{this.name}}</a>
                         </td>
-                        <td class="model">{{this.product_id}}</td>
-                        <td class="quantity"><input type="text" name="quantity" size="3" /></td>
+                        <td class="model">{{this.type}}</td>
+                        <td class="quantity"><input type="text" name="quantity" size="3" value={{this.quantity}}></td>
 
-                        <td class="price">{{this.price}}</td>
-                        <td class="total">{{calculate-price}}</td>
+                        <td class="price">${{this.cost}}</td>
+                        <td class="total">{{price}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
@@ -41,7 +41,7 @@
         </form>
         <div class="cart-module">
             <div>
-                <div class="cart-heading">Shipping Addres</div>
+                <div class="cart-heading">Shipping Address</div>
                 <div class="cart-content">
                     <p>Enter the location of where you want to ship your order to.</p>
                     <table id="shipping">
@@ -127,7 +127,7 @@
     </div>
     <div class="buttons">
         <div class="left"><a onclick="$('#basket').submit();" class="button larger"><span>Update</span></a></div>
-        <div class="right"><a href="http://goinventive.co.uk/themes/shopcart/index.php?route=checkout/checkout" class="button larger"><span>Checkout</span></a></div>
-        <div class="center"><a href="http://goinventive.co.uk/themes/shopcart/index.php?route=common/home" class="button larger"><span>Continue Shopping</span></a></div>
+        <div class="right"><a href='/checkout'><span>Checkout</span></a></div>
+        <div class="center"><a href='/store'><span>Continue Shopping</span></a></div>
     </div>
 </div><!-- << page content >> -->

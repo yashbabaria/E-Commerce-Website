@@ -111,7 +111,7 @@ async function deleteProductFromStore(id) {
 async function loadProducts(constraint=null, param=null) {
     await openDatabase();
     var products;
-    var sql = `SELECT Products.name, Products.type, Products.description, Products.cost,
+    var sql = `SELECT Products.product_id, Products.name, Products.type, Products.description, Products.cost,
         Products.status, Products.image, Products.rating, Products.review_number, 
         Users.username as seller
         FROM Products LEFT JOIN Users WHERE Products.seller_id=Users.user_id `;
@@ -123,7 +123,6 @@ async function loadProducts(constraint=null, param=null) {
         sql +=" ORDER BY Products.name";
         products = await db.all(sql);
     }
-
     return products;
 }
 
